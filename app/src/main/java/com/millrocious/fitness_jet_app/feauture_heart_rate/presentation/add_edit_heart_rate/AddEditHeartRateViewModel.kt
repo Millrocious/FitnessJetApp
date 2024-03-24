@@ -1,0 +1,84 @@
+package com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.add_edit_heart_rate
+
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.millrocious.fitness_jet_app.feauture_heart_rate.domain.model.HeartRate
+import com.millrocious.fitness_jet_app.feauture_heart_rate.domain.use_case.HeartRateUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
+import javax.inject.Inject
+
+@HiltViewModel
+class AddEditHeartRateViewModel @Inject constructor(
+    private val heartRateUseCases: HeartRateUseCases,
+    savedStateHandle: SavedStateHandle
+): ViewModel() {
+    private val _heartRate = mutableIntStateOf(0)
+    val heartRate: State<Int> = _heartRate
+
+    private val _selectedTimestamp = mutableStateOf(OffsetDateTime.now())
+    val selectedTimestamp: State<OffsetDateTime> = _selectedTimestamp
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    private var currentHeartRateId: Int? = null
+
+    fun getCurrentHeartRateId(): Int? {
+        return currentHeartRateId
+    }
+
+    init {
+        savedStateHandle.get<Int>("heartRateId")?.let { heartRateId ->
+            Log.d("HEART_RATE", heartRateId.toString())
+            if (heartRateId != -1) {
+                viewModelScope.launch {
+                    heartRateUseCases.getHeartRate(heartRateId)?.also {
+                        currentHeartRateId = it.id
+                        _heartRate.intValue = it.heartBeats
+                        _selectedTimestamp.value = it.selectedTimestamp
+                    }
+                }
+            }
+        }
+    }
+
+    fun onEvent(event: AddEditHeartRateEvent) {
+        when (event) {
+            is AddEditHeartRateEvent.UpdateHeartRate -> {
+                _heartRate.intValue = event.value
+            }
+
+            is AddEditHeartRateEvent.SaveHeartRate -> {
+                viewModelScope.launch {
+                    heartRateUseCases.addHeartRate(
+                        HeartRate(
+                            heartBeats = heartRate.value,
+                            selectedTimestamp = selectedTimestamp.value,
+                            id = currentHeartRateId
+                        )
+                    )
+                    _eventFlow.emit(UiEvent.SaveHeartRate)
+                }
+            }
+
+            is AddEditHeartRateEvent.UpdateTimestamp -> {
+                _selectedTimestamp.value = event.value
+            }
+        }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackBar(val message: String) : UiEvent()
+        object SaveHeartRate : UiEvent()
+    }
+
+}
