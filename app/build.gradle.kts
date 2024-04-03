@@ -123,4 +123,7 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.3.2")
     implementation("com.google.maps.android:maps-compose-utils:4.3.2")
     implementation("com.google.maps.android:maps-compose-widgets:4.3.2")
+
+    // Location Services
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }
