@@ -7,12 +7,9 @@ import android.content.Intent
 import android.location.Location
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.google.android.gms.location.LocationServices
 import com.millrocious.fitness_jet_app.R
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.LocationClient
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.observer.LocationObserver
-import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.DefaultLocationClient
-import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.observer.DefaultLocationObserver
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.repository.LocationRepository
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,26 +17,24 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class LocationService : Service() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private lateinit var locationClient: LocationClient
-    private lateinit var locationObserver: LocationObserver
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    @Inject
+    lateinit var locationRepository: LocationRepository
+
     override fun onCreate() {
         super.onCreate()
         IS_ACTIVITY_RUNNING = true
-        locationClient = DefaultLocationClient(
-            applicationContext,
-            LocationServices.getFusedLocationProviderClient(applicationContext)
-        )
-        locationObserver = DefaultLocationObserver()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -54,12 +49,11 @@ class LocationService : Service() {
         val notification = createNotification()
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        locationClient
-            .getLocationUpdates(5000L)
+        locationRepository
+            .getLocationUpdates()
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 updateNotification(notification, notificationManager, location)
-                locationObserver.emitLocation(location)
             }
             .launchIn(serviceScope)
 
@@ -89,7 +83,7 @@ class LocationService : Service() {
         notificationManager.notify(1, updatedNotification.build())
     }
     private fun stop() {
-        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopForeground(STOP_FOREGROUND_DETACH)
         stopSelf()
     }
 

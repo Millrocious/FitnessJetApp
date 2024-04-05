@@ -1,4 +1,4 @@
-package com.millrocious.fitness_jet_app.feature_map_tracker.presentation
+package com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -23,13 +24,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.DelicateCoroutinesApi
-import styleJson
+import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.component.styleJson
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -38,7 +40,7 @@ fun MapScreen(
     navController: NavController,
     viewModel: MapViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+    val state by viewModel.state
 
     val context = LocalContext.current
 
@@ -60,6 +62,7 @@ fun MapScreen(
         MapContent(
             navController = navController,
             mapProperties = mapProperties,
+            state = state,
             cameraPositionState = cameraPositionState,
             onEvent = { event ->
                 viewModel.onEvent(event)
@@ -75,11 +78,11 @@ fun MapScreen(
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun MapContent(
     navController: NavController,
     mapProperties: MapProperties,
+    state: MapState,
     cameraPositionState: CameraPositionState,
     onEvent: (MapEvent) -> Unit
 ) {
@@ -98,7 +101,31 @@ fun MapContent(
                     .clip(RoundedCornerShape(30.dp)),
                 properties = mapProperties,
                 cameraPositionState = cameraPositionState
-            )
+            ) {
+//                if (state.lastKnownLocation != null) {
+//                    Marker(
+//                        state = MarkerState(position = LatLng(state.lastKnownLocation.latitude, state.lastKnownLocation.longitude)),
+//                        title = "My Location",
+//                        snippet = "This is my current location"
+//                    )
+//                }
+
+                if (state.pathPoints.isNotEmpty()) {
+                    Polyline(
+                        points = state.pathPoints,
+                        jointType = JointType.ROUND,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        width = 15F,
+                        zIndex = 1f,
+                    )
+                    Polyline(
+                        points = state.pathPoints,
+                        jointType = JointType.ROUND,
+                        color = MaterialTheme.colorScheme.inversePrimary,
+                        width = 30F
+                    )
+                }
+            }
         }
 
         Box(
@@ -123,7 +150,6 @@ fun MapContent(
                         Text(text = "Stop service")
                     }
                 }
-
             }
         }
     }

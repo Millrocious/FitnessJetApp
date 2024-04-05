@@ -1,4 +1,4 @@
-package com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.util
+package com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.extension
 
 import android.Manifest
 import android.content.Context
