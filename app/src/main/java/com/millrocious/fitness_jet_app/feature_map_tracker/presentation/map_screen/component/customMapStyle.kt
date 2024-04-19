@@ -1,3 +1,5 @@
+package com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.component
+
 val styleJson = """
 [
   {

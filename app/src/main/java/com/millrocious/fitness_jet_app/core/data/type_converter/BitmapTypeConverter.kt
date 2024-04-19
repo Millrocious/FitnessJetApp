@@ -1,0 +1,21 @@
+package com.millrocious.fitness_jet_app.core.data.type_converter
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.room.TypeConverter
+import java.io.ByteArrayOutputStream
+
+object BitmapTypeConverter {
+    @TypeConverter
+    fun fromByteArrayToBitmap(bytes: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    @TypeConverter
+    fun fromBitmapToByteArray(bitmap: Bitmap): ByteArray {
+        return ByteArrayOutputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+            return@use it.toByteArray()
+        }
+    }
+}

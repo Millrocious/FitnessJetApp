@@ -6,6 +6,9 @@ val Blue10 = Color(0xff0f1624)
 val Blue20 = Color(0xff1e2b48)
 val Blue30 = Color(0xff2d416c)
 val Blue40 = Color(0xff3c5790)
+val Blue50 = Color(0xff4a6fb5) // Added
+val Blue60 = Color(0xff5890e0) // Added
+val Blue70 = Color(0xff66a9ff) // Added
 val Blue80 = Color(0xffb7c4e1)
 val Blue90 = Color(0xffdbe2f0)
 

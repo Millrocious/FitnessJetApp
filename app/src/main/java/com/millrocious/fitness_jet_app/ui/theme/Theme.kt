@@ -14,9 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorPalette = darkColorScheme(
     primary = Blue80,
     onPrimary = Blue20,
-    primaryContainer = Blue80,
+    primaryContainer = Blue70,
     onPrimaryContainer = Blue90,
-    inversePrimary = Blue40, //Blue40
+    inversePrimary = Blue50, //Blue40
     secondary = DarkBlue80,
     onSecondary = DarkBlue20,
     secondaryContainer = DarkBlue80,
@@ -42,7 +42,7 @@ private val DarkColorPalette = darkColorScheme(
 )
 
 private val LightColorPalette = lightColorScheme(
-    primary = Blue40,
+    primary = Blue80,
     onPrimary = Color.White,
     primaryContainer = Blue90,
     onPrimaryContainer = Blue10,
