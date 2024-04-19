@@ -1,25 +1,17 @@
 package com.millrocious.fitness_jet_app
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.notification.NotificationHelper
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class FitnessJetApp: Application() {
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
+
     override fun onCreate() {
         super.onCreate()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                "location",
-                "Location",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        notificationHelper.createNotificationChannel()
     }
 }

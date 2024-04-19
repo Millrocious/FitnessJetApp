@@ -4,5 +4,5 @@ package com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.mana
 interface LocationServiceManager {
     fun startLocationService()
     fun stopLocationService()
-    fun isLocationServiceRunning(): Boolean
+    fun isLocationServiceRunning(): String
 }

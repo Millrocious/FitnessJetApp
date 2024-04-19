@@ -9,7 +9,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
-import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.extension.hasLocationPermission
+import com.millrocious.fitness_jet_app.feature_map_tracker.framework.extension.hasLocationPermission
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.client.LocationClient
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

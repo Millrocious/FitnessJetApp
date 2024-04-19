@@ -7,8 +7,15 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.data.repository.Locat
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.client.LocationClient
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.manager.LocationServiceManager
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.repository.LocationRepository
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.repository.RunRepository
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.tracker.TrackingManager
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.AddCurrentRun
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetAllRun
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentLocation
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentRunState
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.LocationUseCases
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StartResumePauseTracking
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StopTracking
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.manager.DefaultLocationServiceManager
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.сlient.DefaultLocationClient
 import dagger.Module
@@ -35,7 +42,10 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideLocationClient(@ApplicationContext context: Context, fusedLocationProviderClient: FusedLocationProviderClient): LocationClient {
+    fun provideLocationClient(
+        @ApplicationContext context: Context,
+        fusedLocationProviderClient: FusedLocationProviderClient
+    ): LocationClient {
         return DefaultLocationClient(context, fusedLocationProviderClient)
     }
 
@@ -47,9 +57,18 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideLocationUseCases(repository: LocationRepository): LocationUseCases {
+    fun provideLocationUseCases(
+        runRepository: RunRepository,
+        repository: LocationRepository,
+        trackingManager: TrackingManager
+    ): LocationUseCases {
         return LocationUseCases(
             getCurrentLocation = GetCurrentLocation(repository),
+            getCurrentRunState = GetCurrentRunState(trackingManager),
+            resumePauseTracking = StartResumePauseTracking(trackingManager),
+            stopTracking = StopTracking(trackingManager),
+            getAllRun = GetAllRun(runRepository),
+            addCurrentRun = AddCurrentRun(runRepository)
         )
     }
 }
