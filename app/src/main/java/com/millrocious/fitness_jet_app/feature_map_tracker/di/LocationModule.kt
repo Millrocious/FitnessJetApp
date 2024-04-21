@@ -13,6 +13,7 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.AddCu
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetAllRun
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentLocation
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetRunById
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.LocationUseCases
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StartResumePauseTracking
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StopTracking
@@ -68,7 +69,8 @@ object LocationModule {
             resumePauseTracking = StartResumePauseTracking(trackingManager),
             stopTracking = StopTracking(trackingManager),
             getAllRun = GetAllRun(runRepository),
-            addCurrentRun = AddCurrentRun(runRepository)
+            addCurrentRun = AddCurrentRun(runRepository),
+            getRunById = GetRunById(runRepository)
         )
     }
 }

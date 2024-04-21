@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.millrocious.fitness_jet_app.core.presentation.screen.metrics.MetricsScreen
 import com.millrocious.fitness_jet_app.core.presentation.util.Screen
+import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.finish_screen.MapResultScreen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.MapScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.add_edit_blood_pressure.AddEditBloodPressureScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.blood_pressures.BloodPressuresScreen
@@ -25,11 +26,6 @@ fun App() {
         navController = navController,
         startDestination = Screen.MetricsScreen.route
     ) {
-        composable(
-            route = Screen.MapScreen.route,
-        ) {
-            MapScreen(navController = navController)
-        }
         // Heart rate feature
         composable(
             route = Screen.HeartRatesScreen.route,
@@ -85,6 +81,26 @@ fun App() {
             route = Screen.MetricsScreen.route,
         ) {
             MetricsScreen(navController = navController)
+        }
+        // Map Screens
+        composable(
+            route = Screen.MapScreen.route,
+        ) {
+            MapScreen(navController = navController)
+        }
+        composable(
+            route = Screen.FinishMapScreen.route +
+                    "?runId={runId}",
+            arguments = listOf(
+                navArgument(
+                    name = "runId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+            )
+        ) {
+            MapResultScreen(navController = navController)
         }
     }
 }

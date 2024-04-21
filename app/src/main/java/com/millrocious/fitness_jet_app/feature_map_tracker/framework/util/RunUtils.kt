@@ -88,7 +88,7 @@ object RunUtils {
                     boundsBuilder.build(),
                     snapshotSideLength.toInt(),
                     snapshotSideLength.toInt(),
-                    (snapshotSideLength * 0.05).toInt()
+                    (snapshotSideLength * 0.4).toInt()
                 )
         )
 
