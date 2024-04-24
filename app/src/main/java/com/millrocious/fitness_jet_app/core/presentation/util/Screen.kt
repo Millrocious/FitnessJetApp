@@ -10,5 +10,7 @@ sealed class Screen(val route: String) {
     object AddEditBloodPressureScreen: Screen("add_edit_blood_pressure_screen")
 
     object MetricsScreen: Screen("metrics_screen")
+
     object MapScreen: Screen("map_screen")
+    object FinishMapScreen: Screen("finish_map_screen")
 }

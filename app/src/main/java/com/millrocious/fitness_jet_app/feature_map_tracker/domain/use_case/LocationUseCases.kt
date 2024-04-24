@@ -6,5 +6,6 @@ data class LocationUseCases(
     val resumePauseTracking: StartResumePauseTracking,
     val stopTracking: StopTracking,
     val getAllRun: GetAllRun,
-    val addCurrentRun: AddCurrentRun
+    val addCurrentRun: AddCurrentRun,
+    val getRunById: GetRunById
 )

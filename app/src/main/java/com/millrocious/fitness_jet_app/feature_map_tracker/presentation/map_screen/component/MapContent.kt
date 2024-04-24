@@ -100,7 +100,7 @@ fun MapContent(
                         state.pathPoints,
                         mapCenter,
                         onSnapshot,
-                        snapshotSideLength = mapSize.width / 2
+                        snapshotSideLength = mapSize.width
                     )
                 }
             }

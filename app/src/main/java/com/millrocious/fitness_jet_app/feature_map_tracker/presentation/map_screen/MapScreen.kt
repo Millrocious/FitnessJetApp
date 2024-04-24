@@ -19,6 +19,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.millrocious.fitness_jet_app.core.presentation.util.Screen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.component.MapContent
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.component.styleJson
 
@@ -62,6 +63,12 @@ fun MapScreen(
             },
             onSnapshot = { bitmap ->  
                 viewModel.onEvent(MapEvent.FinishRun(bitmap))
+
+                viewModel.finishRun { currentRunId ->
+                    navController.navigate(
+                        Screen.FinishMapScreen.route +
+                                "?runId=${currentRunId}")
+                }
             },
         )
     } else {

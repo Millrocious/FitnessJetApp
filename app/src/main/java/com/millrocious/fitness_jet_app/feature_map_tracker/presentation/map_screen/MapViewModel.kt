@@ -26,6 +26,9 @@ class MapViewModel @Inject constructor(
         CurrentRunState()
     )
 
+    private var currentRunId: Long? = null
+    private var onFinishRunCallback: ((Long?) -> Unit)? = null
+
     private var getLatestLocation: Job? = null
 
     fun onEvent(event: MapEvent) {
@@ -63,7 +66,7 @@ class MapViewModel @Inject constructor(
                 locationUseCases.resumePauseTracking(true)
 
                 viewModelScope.launch {
-                    locationUseCases.addCurrentRun(
+                    currentRunId = locationUseCases.addCurrentRun(
                         Run(
                             img = event.bitmap,
                             avgSpeedInKMH = currentRunState.value.distanceInMeters
@@ -76,11 +79,17 @@ class MapViewModel @Inject constructor(
                             steps = currentRunState.value.steps
                         )
                     )
+
+                    onFinishRunCallback?.invoke(currentRunId)
                 }
 
                 locationUseCases.stopTracking()
             }
         }
+    }
+
+    fun finishRun(callback: (Long?) -> Unit) {
+        onFinishRunCallback = callback
     }
 
 //    private fun fetchLatestLocation() {
