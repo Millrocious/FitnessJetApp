@@ -24,4 +24,8 @@ class RunRepositoryImpl @Inject constructor(
     override fun getAllRun(): Flow<List<Run>> {
         return runDao.getAllRun()
     }
+
+    override fun getTotalStepsByToday(): Flow<Long?> {
+        return runDao.getTotalStepsByToday()
+    }
 }

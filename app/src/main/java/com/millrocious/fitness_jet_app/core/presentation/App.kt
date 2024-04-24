@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.millrocious.fitness_jet_app.core.presentation.screen.metrics.MetricsScreen
 import com.millrocious.fitness_jet_app.core.presentation.util.Screen
+import com.millrocious.fitness_jet_app.feature_home.presentation.HomeScreen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.finish_screen.MapResultScreen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.MapScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.add_edit_blood_pressure.AddEditBloodPressureScreen
@@ -101,6 +102,12 @@ fun App() {
             )
         ) {
             MapResultScreen(navController = navController)
+        }
+        // Home Screens
+        composable(
+            route = Screen.HomeScreen.route,
+        ) {
+            HomeScreen(navController = navController)
         }
     }
 }

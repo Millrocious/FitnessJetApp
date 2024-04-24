@@ -21,7 +21,7 @@ fun BottomBar(
     navController: NavController
 ) {
     val screens = listOf(
-        BottomNavItem.MapScreen, BottomNavItem.Metrics
+        BottomNavItem.MapScreen, BottomNavItem.Home, BottomNavItem.Metrics
     )
 
     NavigationBar {
