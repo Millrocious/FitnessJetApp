@@ -101,6 +101,7 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:$composeVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.6")
 
     // Hilt
     val hiltVersion = "2.49"
@@ -137,4 +138,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-service:$lifecycle")
+
+
 }
