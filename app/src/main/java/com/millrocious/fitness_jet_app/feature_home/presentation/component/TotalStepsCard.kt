@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.DoNotStep
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,17 +57,17 @@ fun TotalStepsCard(
         ) {
             Icon(
                 modifier = Modifier.size(32.dp),
-                imageVector = Icons.Default.Person,
+                imageVector = Icons.Default.DoNotStep,
                 contentDescription = "Steps Icon",
             )
             Text(
-                text = "Total Steps",
+                text = "Steps today",
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = totalSteps.toString(),
+                text = totalSteps?.toString() ?: "0",
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp
             )
