@@ -142,4 +142,7 @@ dependencies {
     // Firebase
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.android.gms:play-services-auth:21.1.0")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }
