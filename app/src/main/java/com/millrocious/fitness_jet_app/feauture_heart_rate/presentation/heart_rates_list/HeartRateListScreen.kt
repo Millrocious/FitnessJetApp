@@ -53,21 +53,20 @@ fun HeartRatesListScreen(
                 state,
                 onNavigate = { route ->
                     navController.navigate(route)
-                },
-                onDelete = { heartRate ->
-                    viewModel.onEvent(HeartRateListEvent.DeleteHeartRate(heartRate))
-                    scope.launch {
-                        val result = snackbarHostState.showSnackbar(
-                            message = "Heart rate deleted",
-                            actionLabel = "Undo"
-                        )
+                }
+            ) { heartRate ->
+                viewModel.onEvent(HeartRateListEvent.DeleteHeartRate(heartRate))
+                scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = "Heart rate deleted",
+                        actionLabel = "Undo"
+                    )
 
-                        if(result == SnackbarResult.ActionPerformed) {
-                            viewModel.onEvent(HeartRateListEvent.RestoreHeartRate)
-                        }
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.onEvent(HeartRateListEvent.RestoreHeartRate)
                     }
                 }
-            )
+            }
         }
     }
 }

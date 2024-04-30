@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.model.Run
-import com.millrocious.fitness_jet_app.feauture_blood_pressure.domain.model.BloodPressure
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,4 +21,7 @@ interface RunDao {
 
     @Query("SELECT * FROM running_table")
     fun getAllRun(): Flow<List<Run>>
+
+    @Query("SELECT SUM(steps) FROM running_table WHERE date(timestamp) = date('now')")
+    fun getTotalStepsByToday(): Flow<Long?>
 }

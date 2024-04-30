@@ -9,6 +9,7 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentR
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.PathPoint
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.tracker.LocationTrackingManager
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.tracker.TrackingManager
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.util.MetricHelper
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.service.LocationService
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.service.LocationServiceState
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.util.RunUtils
@@ -67,7 +68,7 @@ class DefaultTrackingManager @Inject constructor(
         val pos = LatLng(it.latitude, it.longitude)
 
         _currentRunState.update { state ->
-            val pathPoints = state.pathPoints + PathPoint.LocationPoint(pos)
+            val pathPoints = state.pathPoints + PathPoint.LocationPoint(pos, MetricHelper.getUserSpeedStateByValue(state.speedInKMH))
             state.copy(
                 pathPoints = pathPoints,
                 distanceInMeters = state.distanceInMeters.run {

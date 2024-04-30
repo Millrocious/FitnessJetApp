@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
-import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.util.MetricsUtil
 
 @Composable
 fun MapBottomMenuHeader(

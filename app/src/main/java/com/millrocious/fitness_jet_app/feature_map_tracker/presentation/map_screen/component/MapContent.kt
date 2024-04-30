@@ -5,7 +5,6 @@ import android.location.Location
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapEffect
@@ -32,7 +33,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Polyline
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.PathPoint
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.LocationPoint
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.util.RunUtils
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.util.RunUtils.lasLocationPoint
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.MapEvent
@@ -53,7 +54,11 @@ fun MapContent(
     var mapCenter by remember { mutableStateOf(Offset(0f, 0f)) }
     var isRunningFinished by remember { mutableStateOf(false) }
     var distanceToMarker by remember { mutableIntStateOf(0) }
-    val latLngList = mutableListOf<LatLng>()
+
+    var latLngList by remember { mutableStateOf(mutableListOf<LocationPoint>()) }
+    var previousSpeed by remember { mutableStateOf(UserSpeed.SLOW) }
+
+    var polylineList by remember { mutableStateOf(listOf<List<LocationPoint>>()) }
 
     LaunchedEffect(key1 = state.pathPoints.lasLocationPoint()) {
         state.pathPoints.lasLocationPoint()?.let {
@@ -71,6 +76,20 @@ fun MapContent(
                 LatLng(49.126308, 24.721064).longitude,
                 result
             )
+
+            if (latLngList.isNotEmpty()) {
+                val lastSpeed = latLngList.last().speed
+                if (lastSpeed != previousSpeed) {
+
+                    val previousLocationPoint = latLngList.last().copy(speed = lastSpeed)
+                    latLngList.clear()
+                    latLngList.add(previousLocationPoint)
+                    previousSpeed = lastSpeed
+                }
+            }
+
+            latLngList.add(LocationPoint(it.latLng, it.speed))
+            polylineList = polylineList + listOf(latLngList.toList())
 
             distanceToMarker = result[0].roundToInt()
         }
@@ -105,17 +124,17 @@ fun MapContent(
                 }
             }
 
-            state.pathPoints.forEach { pathPoint ->
-                if (pathPoint is PathPoint.LocationPoint) {
-                    latLngList += pathPoint.latLng
-                    Polyline(
-                        points = latLngList.toList(),
-                        jointType = JointType.ROUND,
-                        width = 15F,
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                    )
-                }
+            polylineList.forEach { polylinePoints ->
+                Polyline(
+                    startCap = RoundCap(),
+                    endCap = RoundCap(),
+                    points = polylinePoints.map { it.latLng }.toList(),
+                    jointType = JointType.ROUND,
+                    width = 15F,
+                    color = getColorBySpeed(polylinePoints.first().speed)
+                )
             }
+
             MarkerContent(distanceToMarker = distanceToMarker)
         }
         MapBottomMenu(
@@ -129,4 +148,19 @@ fun MapContent(
             }
         )
     }
+}
+
+// Helper function to get color based on speed category
+private fun getColorBySpeed(speed: UserSpeed): Color {
+    return when (speed) {
+        UserSpeed.SLOW -> Color(0xFFC4E066)
+        UserSpeed.MEDIUM -> Color(0xFFE0CC6D)
+        UserSpeed.FAST -> Color(0xFFE08266)
+    }
+}
+
+enum class UserSpeed {
+    SLOW,
+    MEDIUM,
+    FAST
 }

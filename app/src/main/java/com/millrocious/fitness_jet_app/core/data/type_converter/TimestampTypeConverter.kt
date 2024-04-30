@@ -23,4 +23,9 @@ object TimestampTypeConverter {
 
     @TypeConverter
     fun fromLocalDate(date: LocalDate?) = date?.format(formatter)
+
+    @TypeConverter
+    fun toLocalDate(offsetDateTime: OffsetDateTime?): LocalDate? {
+        return offsetDateTime?.toLocalDate()
+    }
 }

@@ -8,14 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.AccessAlarm
+import androidx.compose.material.icons.outlined.DoNotStep
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.finish_screen.RunState
-import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.util.MetricsUtil
 
 @Composable
 fun MapResultInfoHeader(
@@ -37,7 +37,7 @@ fun MapResultInfoHeader(
         ) {
             MapResultItem(
                 value = MetricsUtil.formatTime(runState.durationInMillis),
-                icon = Icons.Default.Person,
+                icon = Icons.Default.AccessAlarm,
                 title = "Time elapsed",
                 metric = ""
             )
@@ -52,7 +52,7 @@ fun MapResultInfoHeader(
         ) {
             MapResultItem(
                 value = runState.steps.toString(),
-                icon = Icons.Default.LocationOn,
+                icon = Icons.Outlined.DoNotStep,
                 title = "Steps",
                 metric = "steps"
             )

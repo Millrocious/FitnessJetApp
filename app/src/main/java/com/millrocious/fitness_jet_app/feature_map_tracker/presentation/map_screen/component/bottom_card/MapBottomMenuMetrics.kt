@@ -6,16 +6,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.ElectricBolt
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.DoNotStep
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
-import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.util.MetricsUtil
 
 @Composable
 fun MapBottomMenuMetrics(state: CurrentRunState) {
@@ -34,7 +34,7 @@ fun MapBottomMenuMetrics(state: CurrentRunState) {
                 value = MetricsUtil.formatDistance(state.distanceInMeters)
             )
             MetricItem(
-                icon = Icons.Default.Person,
+                icon = Icons.Outlined.DoNotStep,
                 title = "Steps",
                 value = state.steps.toString()
             )
@@ -46,12 +46,12 @@ fun MapBottomMenuMetrics(state: CurrentRunState) {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             MetricItem(
-                icon = Icons.Default.Star,
+                icon = Icons.Default.ElectricBolt,
                 title = "Speed",
                 value = MetricsUtil.formatSpeed(state.speedInKMH)
             )
             MetricItem(
-                icon = Icons.Default.Favorite,
+                icon = Icons.Default.LocalFireDepartment,
                 title = "Calories",
                 value = "0"
             )

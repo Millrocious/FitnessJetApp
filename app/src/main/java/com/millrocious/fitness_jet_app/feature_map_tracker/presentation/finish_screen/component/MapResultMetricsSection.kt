@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -50,7 +50,7 @@ fun MapResultMetricsSection(
         )
         MapResultItem(
             value = "0",
-            icon = Icons.Default.Favorite,
+            icon = Icons.Default.LocalFireDepartment,
             title = "Calories",
             metric = "kcal"
         )
