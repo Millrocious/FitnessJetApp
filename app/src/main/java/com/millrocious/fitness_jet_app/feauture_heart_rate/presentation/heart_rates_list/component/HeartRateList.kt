@@ -142,9 +142,8 @@ fun HeartRateListPreview() {
         Surface {
             HeartRateList(
                 state = heartRateMap,
-                onNavigate = {},
-                onDelete = {}
-            )
+                onNavigate = {}
+            ) {}
         }
     }
 }

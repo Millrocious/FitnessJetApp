@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fitness Jet App</string>
+    <string name="series_x">Series %d</string>
 </resources>

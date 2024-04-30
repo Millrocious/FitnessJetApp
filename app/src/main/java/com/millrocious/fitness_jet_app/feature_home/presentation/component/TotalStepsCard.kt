@@ -47,7 +47,7 @@ fun TotalStepsCard(
             progress = { (totalSteps?.toFloat() ?: 0f) / 10000f },
             color = MaterialTheme.colorScheme.primary,
             strokeWidth = 24.dp,
-            trackColor = MaterialTheme.colorScheme.background,
+            trackColor = MaterialTheme.colorScheme.surfaceContainer,
             strokeCap = StrokeCap.Round,
         )
         Column(
