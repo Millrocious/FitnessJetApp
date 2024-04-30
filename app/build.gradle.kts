@@ -74,7 +74,7 @@ android {
 
 dependencies {
     // Core dependencies
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
@@ -138,13 +138,4 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-service:$lifecycle")
-
-    // For Jetpack Compose.
-//    implementation("com.patrykandpatrick.vico:compose:2.0.0-alpha.17")
-//
-//    // For `compose`. Creates a `ChartStyle` based on an M2 Material Theme.
-//    implementation("com.patrykandpatrick.vico:compose-m2:2.0.0-alpha.17")
-//
-//    // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.17")
 }
