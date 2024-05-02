@@ -90,9 +90,4 @@ class AddEditHeartRateViewModel @Inject constructor(
         data class ShowSnackBar(val message: String) : UiEvent()
         object SaveHeartRate : UiEvent()
     }
-
 }
-
-data class User(
-    val username: String? = null, val email: String? = null
-)

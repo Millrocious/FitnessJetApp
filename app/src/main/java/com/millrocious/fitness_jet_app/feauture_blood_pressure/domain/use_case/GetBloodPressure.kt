@@ -6,7 +6,7 @@ import com.millrocious.fitness_jet_app.feauture_blood_pressure.domain.repository
 class GetBloodPressure(
     private val heartRateRepository: BloodPressureRepository
 ) {
-    suspend operator fun invoke(id: Int): BloodPressure? {
+    suspend operator fun invoke(id: String): BloodPressure? {
         return heartRateRepository.getBloodPressureById(id)
     }
 }

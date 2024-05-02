@@ -76,8 +76,8 @@ fun App(
                 navArgument(
                     name = "bloodPressureId"
                 ) {
-                    type = NavType.IntType
-                    defaultValue = -1
+                    type = NavType.StringType
+                    defaultValue = ""
                 },
             )
         ) {

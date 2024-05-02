@@ -33,19 +33,19 @@ class AddEditBloodPressureViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentBloodPressureId: Int? = null
+    private var currentBloodPressureId: String? = null
 
-    fun getCurrentHeartRateId(): Int? {
+    fun getCurrentHeartRateId(): String? {
         return currentBloodPressureId
     }
 
     init {
-        savedStateHandle.get<Int>("bloodPressureId")?.let { bloodPressureId ->
-            Log.d("BLOOD_PRESSURE", bloodPressureId.toString())
-            if (bloodPressureId != -1) {
+        savedStateHandle.get<String>("bloodPressureId")?.let { bloodPressureId ->
+            Log.d("BLOOD_PRESSURE", bloodPressureId)
+            if (bloodPressureId != "") {
                 viewModelScope.launch {
                     bloodPressureUseCases.getBloodPressure(bloodPressureId)?.also {
-                        currentBloodPressureId = it.id
+                        currentBloodPressureId = it.uuid
                         _bloodPressureDiastolic.intValue = it.diastolic
                         _bloodPressureSystolic.intValue = it.systolic
                         _selectedTimestamp.value = it.selectedTimestamp
@@ -67,14 +67,23 @@ class AddEditBloodPressureViewModel @Inject constructor(
 
             is AddEditBloodPressureEvent.SaveBloodPressure -> {
                 viewModelScope.launch {
-                    bloodPressureUseCases.addBloodPressure(
+                    val newBloodPressure = currentBloodPressureId?.let {
                         BloodPressure(
                             systolic = bloodPressureSystolic.value,
                             diastolic = bloodPressureDiastolic.value,
                             selectedTimestamp = selectedTimestamp.value,
-                            id = currentBloodPressureId
+                            uuid = it
                         )
+                    } ?: BloodPressure(
+                        systolic = bloodPressureSystolic.value,
+                        diastolic = bloodPressureDiastolic.value,
+                        selectedTimestamp = selectedTimestamp.value
                     )
+
+                    bloodPressureUseCases.addBloodPressure(
+                        newBloodPressure
+                    )
+
                     _eventFlow.emit(UiEvent.SaveHeartRate)
                 }
             }
