@@ -3,6 +3,7 @@ package com.millrocious.fitness_jet_app.feature_map_tracker.di
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.millrocious.fitness_jet_app.core.di.qualifiers.FireBaseDb
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.repository.LocationRepositoryImpl
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.client.LocationClient
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.manager.LocationServiceManager
@@ -59,7 +60,7 @@ object LocationModule {
     @Provides
     @Singleton
     fun provideLocationUseCases(
-        runRepository: RunRepository,
+        @FireBaseDb runRepository: RunRepository,
         repository: LocationRepository,
         trackingManager: TrackingManager
     ): LocationUseCases {

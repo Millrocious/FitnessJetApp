@@ -2,7 +2,11 @@ package com.millrocious.fitness_jet_app.feature_map_tracker.di
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.firebase.database.FirebaseDatabase
 import com.millrocious.fitness_jet_app.core.data.data_source.AppDatabase
+import com.millrocious.fitness_jet_app.core.di.qualifiers.FireBaseDb
+import com.millrocious.fitness_jet_app.core.di.qualifiers.RoomDb
+import com.millrocious.fitness_jet_app.feature_map_tracker.data.repository.RunRepositoryFirebase
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.repository.RunRepositoryImpl
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.location.manager.LocationServiceManager
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.notification.NotificationHelper
@@ -27,8 +31,16 @@ object TrackingModule {
 
     @Provides
     @Singleton
+    @RoomDb
     fun provideRunRepository(db: AppDatabase): RunRepository {
         return RunRepositoryImpl(db.runDao)
+    }
+
+    @Provides
+    @Singleton
+    @FireBaseDb
+    fun provideRunRepositoryFirebase(db: FirebaseDatabase): RunRepository {
+        return RunRepositoryFirebase(db)
     }
 
     @Singleton

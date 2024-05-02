@@ -6,7 +6,7 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.domain.repository.Run
 class AddCurrentRun(
     private val runRepository: RunRepository
 ) {
-    suspend operator fun invoke(run: Run): Long {
+    suspend operator fun invoke(run: Run): String {
         return runRepository.insertRun(run)
     }
 }

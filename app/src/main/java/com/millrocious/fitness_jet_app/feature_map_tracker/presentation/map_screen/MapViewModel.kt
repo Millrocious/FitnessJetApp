@@ -1,5 +1,6 @@
 package com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.model.Run
@@ -17,53 +18,29 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val locationUseCases: LocationUseCases
 ): ViewModel() {
-//    private val _state = mutableStateOf(MapState())
-//    val state: State<MapState> = _state
-
     val currentRunState = locationUseCases.getCurrentRunState().stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         CurrentRunState()
     )
 
-    private var currentRunId: Long? = null
-    private var onFinishRunCallback: ((Long?) -> Unit)? = null
+    private var currentRunId: String? = null
+    private var onFinishRunCallback: ((String?) -> Unit)? = null
 
     private var getLatestLocation: Job? = null
 
     fun onEvent(event: MapEvent) {
         when (event) {
-//            is MapEvent.StartLocationService -> {
-//                locationServiceManager.startLocationService()
-//                fetchLatestLocation()
-//            }
-
             is MapEvent.StopLocationService -> {
-//                if (locationServiceManager.isLocationServiceRunning()) {
-//                    locationServiceManager.stopLocationService()
-//                    getLatestLocation?.cancel()
-//                }
                 locationUseCases.stopTracking()
             }
-
-//            is MapEvent.AddPathPoint -> {
-//                _state.value = _state.value.copy(
-//                    pathPoints = _state.value.pathPoints + event.latLng
-//                )
-//            }
-//
-//            is MapEvent.ClearPathPoints -> {
-//                _state.value = _state.value.copy(
-//                    pathPoints = emptyList()
-//                )
-//            }
-
             is MapEvent.ResumePauseTracking -> {
                 locationUseCases.resumePauseTracking(currentRunState.value.isTracking)
             }
 
             is MapEvent.FinishRun -> {
                 locationUseCases.resumePauseTracking(true)
+                Log.d("MapViewModel", "Executing onEvent: $event")
 
                 viewModelScope.launch {
                     currentRunId = locationUseCases.addCurrentRun(
@@ -79,6 +56,8 @@ class MapViewModel @Inject constructor(
                             steps = currentRunState.value.steps
                         )
                     )
+                    Log.d("CurrentRunId2", currentRunId.toString())
+                    Log.d("CurrentRunId2", onFinishRunCallback.toString())
 
                     onFinishRunCallback?.invoke(currentRunId)
                 }
@@ -88,21 +67,8 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun finishRun(callback: (Long?) -> Unit) {
+    fun finishRun(callback: (String?) -> Unit) {
         onFinishRunCallback = callback
+        Log.d("MapViewModel", "finishRun callback set")
     }
-
-//    private fun fetchLatestLocation() {
-//        getLatestLocation?.cancel()
-//        getLatestLocation = locationUseCases.getCurrentLocation()
-//            .onEach { location ->
-//                _state.value = _state.value.copy(
-//                    lastKnownLocation = location
-//                )
-//                if (location != null) {
-//                    onEvent(MapEvent.AddPathPoint(LatLng(location.latitude, location.longitude)))
-//                }
-//            }
-//            .launchIn(viewModelScope)
-//    }
 }

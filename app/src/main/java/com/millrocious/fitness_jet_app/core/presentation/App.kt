@@ -104,8 +104,8 @@ fun App(
                 navArgument(
                     name = "runId"
                 ) {
-                    type = NavType.IntType
-                    defaultValue = -1
+                    type = NavType.StringType
+                    defaultValue = ""
                 },
             )
         ) {

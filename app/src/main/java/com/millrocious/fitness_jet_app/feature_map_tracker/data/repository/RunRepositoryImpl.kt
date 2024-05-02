@@ -9,15 +9,17 @@ import javax.inject.Inject
 class RunRepositoryImpl @Inject constructor(
     private val runDao: RunDao
 ) : RunRepository {
-    override suspend fun insertRun(run: Run): Long {
-        return runDao.insertRun(run)
+    override suspend fun insertRun(run: Run): String {
+        runDao.insertRun(run)
+
+        return run.uuid
     }
 
     override suspend fun deleteRun(run: Run) {
         runDao.deleteRun(run)
     }
 
-    override suspend fun getRunById(id: Int): Run? {
+    override suspend fun getRunById(id: String): Run? {
         return runDao.getRunById(id)
     }
 
