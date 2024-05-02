@@ -2,6 +2,8 @@ package com.millrocious.fitness_jet_app.feauture_heart_rate.di
 
 import com.google.firebase.database.FirebaseDatabase
 import com.millrocious.fitness_jet_app.core.data.data_source.AppDatabase
+import com.millrocious.fitness_jet_app.core.di.qualifiers.FireBaseDb
+import com.millrocious.fitness_jet_app.core.di.qualifiers.RoomDb
 import com.millrocious.fitness_jet_app.feauture_heart_rate.data.repository.HeartRateRepositoryFirebase
 import com.millrocious.fitness_jet_app.feauture_heart_rate.data.repository.HeartRateRepositoryImpl
 import com.millrocious.fitness_jet_app.feauture_heart_rate.domain.repository.HeartRateRepository
@@ -16,7 +18,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -51,9 +52,3 @@ object HeartRateModule {
         )
     }
 }
-
-@Qualifier
-annotation class FireBaseDb
-
-@Qualifier
-annotation class RoomDb
