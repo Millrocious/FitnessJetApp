@@ -8,7 +8,4 @@ data class HeartRateFirebase(
     val selectedTimestamp: String = "",
     val createdTimestamp: String = "",
     val updatedTimestamp: String = "",
-) {
-    // Add this no-argument constructor
-    constructor() : this("", "", "", "")
-}
+)
