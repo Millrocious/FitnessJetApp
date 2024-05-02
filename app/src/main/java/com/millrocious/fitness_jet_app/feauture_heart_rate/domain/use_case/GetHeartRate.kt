@@ -6,7 +6,7 @@ import com.millrocious.fitness_jet_app.feauture_heart_rate.domain.repository.Hea
 class GetHeartRate(
     private val heartRateRepository: HeartRateRepository
 ) {
-    suspend operator fun invoke(id: Int): HeartRate? {
+    suspend operator fun invoke(id: String): HeartRate? {
         return heartRateRepository.getHeartRateById(id)
     }
 }

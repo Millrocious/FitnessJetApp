@@ -17,8 +17,8 @@ interface HeartRateDao {
     @Delete
     suspend fun deleteHeartRate(heartRate: HeartRate)
 
-    @Query("SELECT * FROM heartrate WHERE id = :id")
-    suspend fun getHeartRateById(id: Int): HeartRate?
+    @Query("SELECT * FROM heartrate WHERE uuid = :id")
+    suspend fun getHeartRateById(id: String): HeartRate?
 
     @Query("SELECT * FROM heartrate")
     fun getAllHeartRate(): Flow<List<HeartRate>>

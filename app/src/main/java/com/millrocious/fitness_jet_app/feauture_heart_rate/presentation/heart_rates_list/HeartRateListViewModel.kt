@@ -1,5 +1,6 @@
 package com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.heart_rates_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -54,6 +55,7 @@ class HeartRateListViewModel @Inject constructor(
         getHeartRatesJob?.cancel()
         getHeartRatesJob = heartRateUseCases.getHeartRatesGroupedByDate()
             .onEach { heartRatesGrouped ->
+                Log.d("heartRate_list_state", "Received grouped heart rates: $heartRatesGrouped")
                 _state.value = _state.value.copy(
                     heartRatesGroupedByDate = heartRatesGrouped
                 )

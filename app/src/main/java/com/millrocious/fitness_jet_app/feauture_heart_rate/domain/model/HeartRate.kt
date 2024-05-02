@@ -7,10 +7,9 @@ import java.util.UUID
 
 @Entity
 data class HeartRate(
-    @PrimaryKey val id: Int? = null,
     val heartBeats: Int,
     val selectedTimestamp: OffsetDateTime,
     val createdTimestamp: OffsetDateTime = OffsetDateTime.now(),
     val updatedTimestamp: OffsetDateTime = OffsetDateTime.now(),
-    val uuid: String = UUID.randomUUID().toString()
+    @PrimaryKey val uuid: String = UUID.randomUUID().toString()
 )

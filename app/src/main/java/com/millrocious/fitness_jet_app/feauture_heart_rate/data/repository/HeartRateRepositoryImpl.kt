@@ -18,7 +18,7 @@ class HeartRateRepositoryImpl(
         dao.deleteHeartRate(heartRate)
     }
 
-    override suspend fun getHeartRateById(id: Int): HeartRate? {
+    override suspend fun getHeartRateById(id: String): HeartRate? {
         return dao.getHeartRateById(id)
     }
 

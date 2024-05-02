@@ -30,19 +30,21 @@ class AddEditHeartRateViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentHeartRateId: Int? = null
+    private var currentHeartRateId: String? = null
 
-    fun getCurrentHeartRateId(): Int? {
+    fun getCurrentHeartRateId(): String? {
         return currentHeartRateId
     }
 
     init {
-        savedStateHandle.get<Int>("heartRateId")?.let { heartRateId ->
-            Log.d("HEART_RATE", heartRateId.toString())
-            if (heartRateId != -1) {
+        savedStateHandle.get<String>("heartRateId")?.let { heartRateId ->
+            Log.d("HEART_RATE", heartRateId)
+            Log.d("HEART_RATE_ID", heartRateId)
+            Log.d("HEART_RATE_ID", (heartRateId != "").toString())
+            if (heartRateId != "") {
                 viewModelScope.launch {
                     heartRateUseCases.getHeartRate(heartRateId)?.also {
-                        currentHeartRateId = it.id
+                        currentHeartRateId = it.uuid
                         _heartRate.intValue = it.heartBeats
                         _selectedTimestamp.value = it.selectedTimestamp
                     }
@@ -59,13 +61,21 @@ class AddEditHeartRateViewModel @Inject constructor(
 
             is AddEditHeartRateEvent.SaveHeartRate -> {
                 viewModelScope.launch {
-                    heartRateUseCases.addHeartRate(
+
+                    val newHeartRate = currentHeartRateId?.let {
                         HeartRate(
                             heartBeats = heartRate.value,
                             selectedTimestamp = selectedTimestamp.value,
-                            id = currentHeartRateId
+                            uuid = it
                         )
+                    } ?: HeartRate(
+                        heartBeats = heartRate.value,
+                        selectedTimestamp = selectedTimestamp.value
                     )
+
+                    heartRateUseCases.addHeartRate(newHeartRate)
+
+
                     _eventFlow.emit(UiEvent.SaveHeartRate)
                 }
             }
@@ -82,3 +92,7 @@ class AddEditHeartRateViewModel @Inject constructor(
     }
 
 }
+
+data class User(
+    val username: String? = null, val email: String? = null
+)
