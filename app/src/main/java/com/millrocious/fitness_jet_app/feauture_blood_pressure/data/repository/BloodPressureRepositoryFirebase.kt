@@ -20,9 +20,9 @@ import java.util.UUID
 class BloodPressureRepositoryFirebase(
     private val database: FirebaseDatabase
 ) : BloodPressureRepository {
-    private val user = FirebaseAuth.getInstance().currentUser
-
     override suspend fun insertBloodPressure(bloodPressure: BloodPressure) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/bloodPressures/${bloodPressure.uuid}")
@@ -40,6 +40,8 @@ class BloodPressureRepositoryFirebase(
     }
 
     override suspend fun deleteBloodPressure(bloodPressure: BloodPressure) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/bloodPressures/${bloodPressure.uuid}")
@@ -48,6 +50,8 @@ class BloodPressureRepositoryFirebase(
     }
 
     override suspend fun getBloodPressureById(id: String): BloodPressure? {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/bloodPressures/$id")
@@ -69,7 +73,7 @@ class BloodPressureRepositoryFirebase(
     }
 
     override fun getBloodPressures(): Flow<List<BloodPressure>> = callbackFlow {
-        val userId = user?.uid ?: return@callbackFlow
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@callbackFlow
 
         val heartRateRef = database.getReference("users/$userId/bloodPressures")
 
@@ -111,6 +115,8 @@ class BloodPressureRepositoryFirebase(
     }
 
     override suspend fun updateBloodPressure(bloodPressure: BloodPressure) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/bloodPressures/${bloodPressure.uuid}")

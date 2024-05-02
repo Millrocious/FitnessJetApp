@@ -20,9 +20,9 @@ import java.util.UUID
 class HeartRateRepositoryFirebase(
     private val database: FirebaseDatabase
 ) : HeartRateRepository {
-    private val user = FirebaseAuth.getInstance().currentUser
-
     override suspend fun insertHeartRate(heartRate: HeartRate) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/heartRates/${heartRate.uuid}")
@@ -39,6 +39,8 @@ class HeartRateRepositoryFirebase(
     }
 
     override suspend fun deleteHeartRate(heartRate: HeartRate) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/heartRates/${heartRate.uuid}")
@@ -47,6 +49,8 @@ class HeartRateRepositoryFirebase(
     }
 
     override suspend fun getHeartRateById(id: String): HeartRate? {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             val heartRateRef = database.getReference("users/${it.uid}/heartRates/$id")
 
@@ -67,7 +71,7 @@ class HeartRateRepositoryFirebase(
     }
 
     override fun getAllHeartRate(): Flow<List<HeartRate>> = callbackFlow {
-        val userId = user?.uid ?: return@callbackFlow
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@callbackFlow
 
         val heartRateRef = database.getReference("users/$userId/heartRates")
         val listener = heartRateRef.addValueEventListener(object : ValueEventListener {
@@ -107,6 +111,8 @@ class HeartRateRepositoryFirebase(
     }
 
     override suspend fun updateHeartRate(heartRate: HeartRate) {
+        val user = FirebaseAuth.getInstance().currentUser
+
         user?.let {
             database
                 .getReference("users/${it.uid}/heartRates/${heartRate.uuid}")
