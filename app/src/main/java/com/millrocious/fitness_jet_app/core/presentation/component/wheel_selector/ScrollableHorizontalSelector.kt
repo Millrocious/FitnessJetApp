@@ -1,4 +1,4 @@
-package com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.add_edit_heart_rate.component
+package com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,11 +26,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector.HorizontalWheelPicker
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScrollableHeartRateSelector(
+fun ScrollableHorizontalSelector(
     modifier: Modifier = Modifier,
     startIndex: Int,
     onItemSelected: (Int) -> Unit
@@ -88,8 +87,8 @@ fun ScrollableHeartRateSelector(
 
 @Preview
 @Composable
-fun ItemPrev() {
-    ScrollableHeartRateSelector(
+fun ScrollableHorizontalSelectorPrev() {
+    ScrollableHorizontalSelector(
         onItemSelected = {},
         startIndex = 60,
     )

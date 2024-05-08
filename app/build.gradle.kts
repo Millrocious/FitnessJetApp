@@ -154,4 +154,7 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
+
+    //
+    implementation("com.github.zj565061763:compose-wheel-picker:1.0.0-beta05")
 }

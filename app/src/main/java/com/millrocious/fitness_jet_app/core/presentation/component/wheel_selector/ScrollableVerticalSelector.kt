@@ -1,4 +1,4 @@
-package com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.add_edit_heart_rate.component
+package com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,13 +26,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector.HorizontalWheelPicker
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScrollableHeartRateSelector(
+fun ScrollableVerticalSelector(
     modifier: Modifier = Modifier,
     startIndex: Int,
+    count: Int = 300,
     onItemSelected: (Int) -> Unit
 ) {
     val lazyListState = rememberLazyListState()
@@ -41,14 +41,14 @@ fun ScrollableHeartRateSelector(
     var currentIndex by remember { mutableIntStateOf(startIndex) }
 
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
-        HorizontalWheelPicker(
+        VerticalWheelPicker(
             startIndex = startIndex,
             state = lazyListState,
-            count = 300,
-            itemWidth = 50.dp,
+            count = count,
+            itemHeight = 50.dp,
             visibleItemCount = 3,
             onScrollFinish = {
                 currentIndex = it
@@ -88,8 +88,8 @@ fun ScrollableHeartRateSelector(
 
 @Preview
 @Composable
-fun ItemPrev() {
-    ScrollableHeartRateSelector(
+fun ScrollableVerticalSelectorPrev() {
+    ScrollableVerticalSelector(
         onItemSelected = {},
         startIndex = 60,
     )
