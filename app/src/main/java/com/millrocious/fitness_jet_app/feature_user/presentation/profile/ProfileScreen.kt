@@ -25,6 +25,7 @@ import com.millrocious.fitness_jet_app.core.presentation.component.bottom_bar.Bo
 import com.millrocious.fitness_jet_app.feature_user.domain.model.DialogType
 import com.millrocious.fitness_jet_app.feature_user.framework.google_client.GoogleAuthUiClient
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ActionSection
+import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.bmi.BMISection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.GoalsSection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ProfileDialog
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ProfileHeaderSection
@@ -92,6 +93,7 @@ fun ProfileScreen(
                 userData = userData,
             )
             Spacer(modifier = Modifier.height(16.dp))
+            BMISection(profileState = profileState)
             GoalsSection(
                 profileState = profileState,
                 onDialogChange = {
