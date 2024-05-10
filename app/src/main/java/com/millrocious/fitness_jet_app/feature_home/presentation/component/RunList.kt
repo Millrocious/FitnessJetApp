@@ -40,20 +40,27 @@ import androidx.compose.ui.unit.sp
 import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
 import com.millrocious.fitness_jet_app.feature_home.presentation.HomeState
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.model.Run
+import com.millrocious.fitness_jet_app.feature_user.presentation.sign_in.UserData
 
 @Composable
 fun RunList(
     modifier: Modifier = Modifier,
     state: HomeState,
+    userData: UserData?,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
         item {
-            TotalStepsCard(totalSteps = state.totalSteps)
+            TotalStepsCard(
+                totalSteps = state.totalSteps,
+                userStepsGoal = state.stepsGoal,
+                profilePictureUrl = userData?.profilePictureUrl,
+            )
+            StatsCard(homeState = state)
             Text(
-                modifier = Modifier.padding(bottom = 10.dp),
+                modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),
                 text = "All records",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold

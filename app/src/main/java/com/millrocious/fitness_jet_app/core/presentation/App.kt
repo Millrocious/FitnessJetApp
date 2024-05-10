@@ -116,7 +116,10 @@ fun App(
         composable(
             route = Screen.HomeScreen.route,
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(
+                navController = navController,
+                userData = googleAuthUiClient.getSignedInUser(),
+            )
         }
 
         // ------- Auth --------------

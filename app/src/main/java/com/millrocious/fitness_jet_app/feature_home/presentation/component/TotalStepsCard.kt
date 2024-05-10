@@ -3,33 +3,30 @@ package com.millrocious.fitness_jet_app.feature_home.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DoNotStep
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 
 @Composable
 fun TotalStepsCard(
     modifier: Modifier = Modifier,
+    userStepsGoal: Int = 5000,
     totalSteps: Long? = 0,
+    profilePictureUrl: String?
 ) {
     Box(
         modifier = modifier
@@ -41,12 +38,23 @@ fun TotalStepsCard(
 
         CircularProgressIndicator(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.9f)
                 .aspectRatio(1f)
                 .padding(16.dp),
-            progress = { (totalSteps?.toFloat() ?: 0f) / 10000f },
+            progress = { (totalSteps?.toFloat() ?: 0f) / userStepsGoal.toFloat() },
             color = MaterialTheme.colorScheme.primary,
-            strokeWidth = 24.dp,
+            strokeWidth = 14.dp,
+            trackColor = MaterialTheme.colorScheme.surfaceContainer,
+            strokeCap = StrokeCap.Round,
+        )
+        CircularProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .aspectRatio(1f)
+                .padding(16.dp),
+            progress = { (totalSteps?.toFloat() ?: 0f) / userStepsGoal.toFloat() },
+            color = MaterialTheme.colorScheme.primary,
+            strokeWidth = 14.dp,
             trackColor = MaterialTheme.colorScheme.surfaceContainer,
             strokeCap = StrokeCap.Round,
         )
@@ -55,22 +63,16 @@ fun TotalStepsCard(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                modifier = Modifier.size(32.dp),
-                imageVector = Icons.Default.DoNotStep,
-                contentDescription = "Steps Icon",
-            )
-            Text(
-                text = "Steps today",
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = totalSteps?.toString() ?: "0",
-                fontWeight = FontWeight.Bold,
-                fontSize = 32.sp
-            )
+            if (profilePictureUrl != null) {
+                AsyncImage(
+                    model = profilePictureUrl,
+                    contentDescription = "Profile picture",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }
@@ -78,5 +80,5 @@ fun TotalStepsCard(
 @Preview
 @Composable
 private fun TotalStepsPrev() {
-    TotalStepsCard()
+    TotalStepsCard(totalSteps = 3000, profilePictureUrl = "")
 }
