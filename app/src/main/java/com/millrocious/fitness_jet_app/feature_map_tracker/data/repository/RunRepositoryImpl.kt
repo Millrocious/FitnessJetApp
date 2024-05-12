@@ -30,4 +30,8 @@ class RunRepositoryImpl @Inject constructor(
     override fun getTotalStepsByToday(): Flow<Long?> {
         return runDao.getTotalStepsByToday()
     }
+
+    override fun getTotalBurnedCaloriesByToday(): Flow<Int?> {
+        return runDao.getTotalBurnedCaloriesByToday()
+    }
 }

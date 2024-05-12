@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.millrocious.fitness_jet_app.core.presentation.component.bottom_bar.BottomBar
 import com.millrocious.fitness_jet_app.feature_user.domain.model.DialogType
+import com.millrocious.fitness_jet_app.feature_user.domain.model.Gender
 import com.millrocious.fitness_jet_app.feature_user.framework.google_client.GoogleAuthUiClient
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ActionSection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.bmi.BMISection
@@ -54,21 +55,29 @@ fun ProfileScreen(
         ProfileDialog(
             dialogType = dialogType.value!!,
             initialValue = when (dialogType.value) {
-                DialogType.Weight -> profileState.weight
-                DialogType.Height -> profileState.height
-                DialogType.Age -> profileState.age
-                DialogType.StepsGoal -> profileState.stepsGoal
-                null -> 0
+                DialogType.Weight -> profileState.weight as Number
+                DialogType.Height -> profileState.height as Number
+                DialogType.Age -> profileState.age as Number
+                DialogType.StepsGoal -> profileState.stepsGoal as Number
+                DialogType.CaloriesGoal -> profileState.burnedCaloriesGoal as Number
+                DialogType.Gender -> profileState.gender
+                null -> 0 as Number
             },
             onDismissRequest = { dialogType.value = null },
             onConfirmation = { selectedValue ->
                 when (dialogType.value) {
-                    DialogType.Weight -> viewModel.onEvent(ProfileEvent.UpdateWeight(selectedValue.toFloat()))
-                    DialogType.Height -> viewModel.onEvent(ProfileEvent.UpdateHeight(selectedValue.toInt()))
-                    DialogType.Age -> viewModel.onEvent(ProfileEvent.UpdateAge(selectedValue.toInt()))
+                    DialogType.Weight -> viewModel.onEvent(ProfileEvent.UpdateWeight(selectedValue as Float))
+                    DialogType.Height -> viewModel.onEvent(ProfileEvent.UpdateHeight(selectedValue as Int))
+                    DialogType.Age -> viewModel.onEvent(ProfileEvent.UpdateAge(selectedValue as Int))
+                    DialogType.Gender -> viewModel.onEvent(ProfileEvent.UpdateGender(selectedValue as Gender))
                     DialogType.StepsGoal -> viewModel.onEvent(
                         ProfileEvent.UpdateStepsGoal(
-                            selectedValue.toInt()
+                            selectedValue as Int
+                        )
+                    )
+                    DialogType.CaloriesGoal -> viewModel.onEvent(
+                        ProfileEvent.UpdateBurnedCaloriesGoal(
+                            selectedValue as Int
                         )
                     )
 

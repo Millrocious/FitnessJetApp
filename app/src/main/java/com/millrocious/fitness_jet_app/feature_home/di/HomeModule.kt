@@ -1,6 +1,7 @@
 package com.millrocious.fitness_jet_app.feature_home.di
 
 import com.millrocious.fitness_jet_app.core.di.qualifiers.FireBaseDb
+import com.millrocious.fitness_jet_app.feature_home.domain.use_case.GetAllBurnedCaloriesByToday
 import com.millrocious.fitness_jet_app.feature_home.domain.use_case.GetAllRun
 import com.millrocious.fitness_jet_app.feature_home.domain.use_case.GetAllStepsByToday
 import com.millrocious.fitness_jet_app.feature_home.domain.use_case.HomeUseCases
@@ -21,7 +22,8 @@ object HomeModule {
     ): HomeUseCases {
         return HomeUseCases(
             getAllRun = GetAllRun(runRepository),
-            getAllStepsByToday = GetAllStepsByToday(runRepository)
+            getAllStepsByToday = GetAllStepsByToday(runRepository),
+            getAllBurnedCaloriesByToday = GetAllBurnedCaloriesByToday(runRepository)
         )
     }
 }

@@ -23,11 +23,13 @@ class HomeViewModel @Inject constructor(
     private var getRunsJob: Job? = null
     private var getUserInfoJob: Job? = null
     private var getTotalStepsJob: Job? = null
+    private var getTotalBurnedCaloriesJob: Job? = null
 
     init {
         fetchAllRuns()
         fetchUserInfo()
         fetchAllStepsByToday()
+        fetchAllBurnedCaloriesByToday()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -59,12 +61,24 @@ class HomeViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    private fun fetchAllBurnedCaloriesByToday() {
+        getTotalBurnedCaloriesJob?.cancel()
+        getTotalBurnedCaloriesJob = homeUseCases.getAllBurnedCaloriesByToday()
+            .onEach { totalBurnedCalories ->
+                _state.value = _state.value.copy(
+                    totalBurnedCalories = totalBurnedCalories
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun fetchUserInfo() {
         getUserInfoJob?.cancel()
         getUserInfoJob = profileUseCases.getUserInfo()
             .onEach { userInfo ->
                 _state.value = _state.value.copy(
-                    stepsGoal = userInfo.stepsGoal.toInt()
+                    stepsGoal = userInfo.stepsGoal.toInt(),
+                    burnedCaloriesGoal = userInfo.burnedCaloriesGoal.toInt()
                 )
             }
             .launchIn(viewModelScope)

@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Directions
-import androidx.compose.material.icons.twotone.Flag
+import androidx.compose.material.icons.twotone.LocalFireDepartment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -47,7 +47,8 @@ fun StatsCard(
             title = "Steps Taken",
             icon = Icons.Default.Directions,
             iconTintColor = MaterialTheme.colorScheme.primary,
-            value = homeState.totalSteps.toString()
+            value = homeState.totalSteps.toString(),
+            goalValue = homeState.stepsGoal.toString(),
         )
 
         VerticalDivider(
@@ -56,10 +57,11 @@ fun StatsCard(
         )
 
         StepInfo(
-            title = "Goal Steps",
-            icon = Icons.TwoTone.Flag,
+            title = "Calories burned",
+            icon = Icons.TwoTone.LocalFireDepartment,
             iconTintColor = MaterialTheme.colorScheme.errorContainer,
-            value = homeState.stepsGoal.toString()
+            value = homeState.totalBurnedCalories.toString(),
+            goalValue = homeState.burnedCaloriesGoal.toString()
         )
     }
 }
@@ -69,7 +71,8 @@ private fun StepInfo(
     title: String,
     icon: ImageVector,
     iconTintColor: Color,
-    value: String
+    value: String,
+    goalValue: String
 ) {
     Column(
         modifier = Modifier.padding(16.dp)
@@ -81,7 +84,7 @@ private fun StepInfo(
         )
         Row(
             modifier = Modifier.padding(top = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
             Icon(
                 imageVector = icon,
@@ -91,10 +94,18 @@ private fun StepInfo(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
+                modifier = Modifier.padding(bottom = 2.dp),
                 text = value,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
+            Text(
+                text = "/$goalValue",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.outline,
+                fontSize = 10.sp,
+            )
+
         }
     }
 }

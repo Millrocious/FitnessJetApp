@@ -35,6 +35,7 @@ class MapResultViewModel @Inject constructor(
                         _state.value.avgSpeedInKMH = it.avgSpeedInKMH
                         _state.value.distanceInMeters = it.distanceInMeters
                         _state.value.durationInMillis = it.durationInMillis
+                        _state.value.caloriesBurned = it.caloriesBurned
                     }
                 }
             }

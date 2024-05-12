@@ -9,5 +9,6 @@ data class RunFirebase(
     var avgSpeedInKMH: String = "0",
     var distanceInMeters: String = "0",
     var durationInMillis: String = "0",
+    var caloriesBurned: String = "",
     var timestamp: String = "",
 )

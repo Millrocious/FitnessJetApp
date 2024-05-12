@@ -49,7 +49,7 @@ fun MapResultMetricsSection(
             color = MaterialTheme.colorScheme.background
         )
         MapResultItem(
-            value = "0",
+            value = runState.caloriesBurned.toString(),
             icon = Icons.Default.LocalFireDepartment,
             title = "Calories",
             metric = "kcal"

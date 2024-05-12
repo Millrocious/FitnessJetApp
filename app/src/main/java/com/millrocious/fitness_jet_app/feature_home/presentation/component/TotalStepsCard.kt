@@ -25,6 +25,8 @@ import coil.compose.AsyncImage
 fun TotalStepsCard(
     modifier: Modifier = Modifier,
     userStepsGoal: Int = 5000,
+    userBurnedCaloriesGoal: Int = 500,
+    totalBurnedCalories: Int? = 0,
     totalSteps: Long? = 0,
     profilePictureUrl: String?
 ) {
@@ -52,8 +54,8 @@ fun TotalStepsCard(
                 .fillMaxWidth(0.7f)
                 .aspectRatio(1f)
                 .padding(16.dp),
-            progress = { (totalSteps?.toFloat() ?: 0f) / userStepsGoal.toFloat() },
-            color = MaterialTheme.colorScheme.primary,
+            progress = { (totalBurnedCalories?.toFloat() ?: 0f) / userBurnedCaloriesGoal.toFloat() },
+            color = MaterialTheme.colorScheme.errorContainer,
             strokeWidth = 14.dp,
             trackColor = MaterialTheme.colorScheme.surfaceContainer,
             strokeCap = StrokeCap.Round,

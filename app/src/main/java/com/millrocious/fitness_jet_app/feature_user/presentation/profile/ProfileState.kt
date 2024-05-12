@@ -8,4 +8,5 @@ data class ProfileState(
     val gender: Gender = Gender.MALE,
     val age: Int = 0,
     val stepsGoal: Int = 5000,
+    val burnedCaloriesGoal: Int = 300,
 )

@@ -34,6 +34,7 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.UpdateAge -> updateUserInfo(_state.value.copy(age = event.age))
             is ProfileEvent.UpdateGender -> updateUserInfo(_state.value.copy(gender = event.gender))
             is ProfileEvent.UpdateStepsGoal -> updateUserInfo(_state.value.copy(stepsGoal = event.stepsGoal))
+            is ProfileEvent.UpdateBurnedCaloriesGoal -> updateUserInfo(_state.value.copy(burnedCaloriesGoal = event.burnedCaloriesGoal))
         }
     }
 
@@ -45,7 +46,8 @@ class ProfileViewModel @Inject constructor(
                     weight = updatedState.weight.toString(),
                     age = updatedState.age.toString(),
                     gender = updatedState.gender.toString(),
-                    stepsGoal = updatedState.stepsGoal.toString()
+                    stepsGoal = updatedState.stepsGoal.toString(),
+                    burnedCaloriesGoal = updatedState.burnedCaloriesGoal.toString()
                 )
             )
         }
@@ -60,7 +62,8 @@ class ProfileViewModel @Inject constructor(
                     weight = userInfo.weight.toFloat(),
                     gender = Gender.valueOf(userInfo.gender),
                     age = userInfo.age.toInt(),
-                    stepsGoal = userInfo.stepsGoal.toInt()
+                    stepsGoal = userInfo.stepsGoal.toInt(),
+                    burnedCaloriesGoal = userInfo.burnedCaloriesGoal.toInt()
                 )
             }
             .launchIn(viewModelScope)

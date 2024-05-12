@@ -9,4 +9,5 @@ interface RunRepository {
     suspend fun getRunById(id: String): Run?
     fun getAllRun(): Flow<List<Run>>
     fun getTotalStepsByToday(): Flow<Long?>
+    fun getTotalBurnedCaloriesByToday(): Flow<Int?>
 }

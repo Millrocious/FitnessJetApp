@@ -24,4 +24,7 @@ interface RunDao {
 
     @Query("SELECT SUM(steps) FROM running_table WHERE date(timestamp) = date('now')")
     fun getTotalStepsByToday(): Flow<Long?>
+
+    @Query("SELECT SUM(caloriesBurned) FROM running_table WHERE date(timestamp) = date('now')")
+    fun getTotalBurnedCaloriesByToday(): Flow<Int?>
 }

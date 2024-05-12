@@ -40,6 +40,7 @@ class RunRepositoryFirebase @Inject constructor(
                         avgSpeedInKMH = run.avgSpeedInKMH.toString(),
                         distanceInMeters = run.distanceInMeters.toString(),
                         durationInMillis = run.durationInMillis.toString(),
+                        caloriesBurned = run.caloriesBurned.toString(),
                         timestamp = run.timestamp.toString()
                     )
                 )
@@ -71,17 +72,28 @@ class RunRepositoryFirebase @Inject constructor(
             val heartRateFirebase = heartRateRef.get().await().getValue(RunFirebase::class.java)
 
             heartRateFirebase?.let { run ->
-                val img = stringToBitmap(run.img)?.let { img ->
-                    return Run(
-                        img = img,
-                        steps = run.steps.toLong(),
-                        avgSpeedInKMH = run.avgSpeedInKMH.toFloat(),
-                        distanceInMeters = run.distanceInMeters.toInt(),
-                        durationInMillis = run.durationInMillis.toLong(),
-                        timestamp = OffsetDateTime.parse(run.timestamp)
-                    )
-                }
+                val runValues = listOf(
+                    run.steps,
+                    run.avgSpeedInKMH,
+                    run.distanceInMeters,
+                    run.durationInMillis,
+                    run.caloriesBurned,
+                    run.timestamp
+                )
 
+                if (runValues.none { value -> value.isEmpty() }) {
+                    val img = stringToBitmap(run.img)?.let { img ->
+                        return Run(
+                            img = img,
+                            steps = run.steps.toLong(),
+                            avgSpeedInKMH = run.avgSpeedInKMH.toFloat(),
+                            distanceInMeters = run.distanceInMeters.toInt(),
+                            durationInMillis = run.durationInMillis.toLong(),
+                            caloriesBurned = run.caloriesBurned.toInt(),
+                            timestamp = OffsetDateTime.parse(run.timestamp)
+                        )
+                    }
+                }
             }
         }
 
@@ -99,16 +111,30 @@ class RunRepositoryFirebase @Inject constructor(
                 val runList = mutableListOf<Run>()
                 snapshot.children.forEach { child ->
                     val runFirebase = child.getValue(RunFirebase::class.java)
-                    runFirebase?.let { runFirebase ->
-                        val run = Run(
-                            img = stringToBitmap(runFirebase.img)!!,
-                            steps = runFirebase.steps.toLong(),
-                            avgSpeedInKMH = runFirebase.avgSpeedInKMH.toFloat(),
-                            distanceInMeters = runFirebase.distanceInMeters.toInt(),
-                            durationInMillis = runFirebase.durationInMillis.toLong(),
-                            timestamp = OffsetDateTime.parse(runFirebase.timestamp)
+                    runFirebase?.let { run ->
+                        val runValues = listOf(
+                            run.img,
+                            run.steps,
+                            run.avgSpeedInKMH,
+                            run.distanceInMeters,
+                            run.durationInMillis,
+                            run.caloriesBurned,
+                            run.timestamp
                         )
-                        runList.add(run)
+
+                        if (runValues.none { value -> value.isEmpty() }) {
+                            runList.add(
+                                Run(
+                                    img = stringToBitmap(run.img)!!,
+                                    steps = run.steps.toLong(),
+                                    avgSpeedInKMH = run.avgSpeedInKMH.toFloat(),
+                                    distanceInMeters = run.distanceInMeters.toInt(),
+                                    durationInMillis = run.durationInMillis.toLong(),
+                                    caloriesBurned = run.caloriesBurned.toInt(),
+                                    timestamp = OffsetDateTime.parse(run.timestamp)
+                                )
+                            )
+                        }
                     }
                 }
                 trySend(runList)
@@ -145,6 +171,41 @@ class RunRepositoryFirebase @Inject constructor(
                         }
                     }
                     trySend(totalSteps)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle cancellation
+                }
+            })
+
+        awaitClose {
+            runRef.removeEventListener(listener)
+        }
+    }
+
+    override fun getTotalBurnedCaloriesByToday(): Flow<Int?> = callbackFlow {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@callbackFlow
+
+        val today = LocalDate.now()
+        val todayStart = today.atStartOfDay().toInstant(ZoneOffset.UTC)
+        val todayEnd = today.atTime(LocalTime.MAX).toInstant(ZoneOffset.UTC)
+
+        val runRef = database.getReference("users/$userId/runs")
+        val listener = runRef.orderByChild("timestamp")
+            .startAt(todayStart.toString())
+            .endAt(todayEnd.toString())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var totalBurnedCalories = 0
+                    snapshot.children.forEach { child ->
+                        val runFirebase = child.getValue(RunFirebase::class.java)
+                        runFirebase?.let { run ->
+                            if (run.caloriesBurned != "") {
+                                totalBurnedCalories += run.caloriesBurned.toInt()
+                            }
+                        }
+                    }
+                    trySend(totalBurnedCalories)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
