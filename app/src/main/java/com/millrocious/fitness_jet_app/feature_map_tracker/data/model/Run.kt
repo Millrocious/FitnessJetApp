@@ -13,6 +13,7 @@ data class Run(
     var avgSpeedInKMH: Float = 0f,
     var distanceInMeters: Int = 0,
     var durationInMillis: Long = 0L,
+    var caloriesBurned: Int = 0,
     var timestamp: OffsetDateTime = OffsetDateTime.now(),
     @PrimaryKey val uuid: String = UUID.randomUUID().toString()
 )

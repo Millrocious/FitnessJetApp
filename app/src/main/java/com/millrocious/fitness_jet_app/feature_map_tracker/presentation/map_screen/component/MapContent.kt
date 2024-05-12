@@ -32,7 +32,7 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Polyline
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunStateWithCalories
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.LocationPoint
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.util.RunUtils
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.util.RunUtils.lasLocationPoint
@@ -45,7 +45,7 @@ import kotlin.math.roundToInt
 fun MapContent(
     navController: NavController,
     mapProperties: MapProperties,
-    state: CurrentRunState,
+    state: CurrentRunStateWithCalories,
     cameraPositionState: CameraPositionState,
     onEvent: (MapEvent) -> Unit,
     onSnapshot: (Bitmap) -> Unit,
@@ -60,8 +60,8 @@ fun MapContent(
 
     var polylineList by remember { mutableStateOf(listOf<List<LocationPoint>>()) }
 
-    LaunchedEffect(key1 = state.pathPoints.lasLocationPoint()) {
-        state.pathPoints.lasLocationPoint()?.let {
+    LaunchedEffect(key1 = state.currentRunState.pathPoints.lasLocationPoint()) {
+        state.currentRunState.pathPoints.lasLocationPoint()?.let {
             cameraPositionState.animate(
                 CameraUpdateFactory.newCameraPosition(
                     CameraPosition.fromLatLngZoom(it.latLng, 15f)
@@ -116,7 +116,7 @@ fun MapContent(
                 if (isRunningFinished) {
                     RunUtils.takeSnapshot(
                         map,
-                        state.pathPoints,
+                        state.currentRunState.pathPoints,
                         mapCenter,
                         onSnapshot,
                         snapshotSideLength = mapSize.width

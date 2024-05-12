@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.millrocious.fitness_jet_app.feature_map_tracker.data.model.Run
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunStateWithCalories
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.LocationUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -18,11 +18,12 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val locationUseCases: LocationUseCases
 ): ViewModel() {
-    val currentRunState = locationUseCases.getCurrentRunState().stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        CurrentRunState()
-    )
+    val currentRunStateWithCalories = locationUseCases.getCurrentRunStateWithCalories()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            CurrentRunStateWithCalories()
+        )
 
     private var currentRunId: String? = null
     private var onFinishRunCallback: ((String?) -> Unit)? = null
@@ -35,7 +36,7 @@ class MapViewModel @Inject constructor(
                 locationUseCases.stopTracking()
             }
             is MapEvent.ResumePauseTracking -> {
-                locationUseCases.resumePauseTracking(currentRunState.value.isTracking)
+                locationUseCases.resumePauseTracking(currentRunStateWithCalories.value.currentRunState.isTracking)
             }
 
             is MapEvent.FinishRun -> {
@@ -46,18 +47,17 @@ class MapViewModel @Inject constructor(
                     currentRunId = locationUseCases.addCurrentRun(
                         Run(
                             img = event.bitmap,
-                            avgSpeedInKMH = currentRunState.value.distanceInMeters
+                            avgSpeedInKMH = currentRunStateWithCalories.value.currentRunState.distanceInMeters
                                 .toBigDecimal()
                                 .multiply(3600.toBigDecimal())
-                                .divide(currentRunState.value.timeDuration.toBigDecimal(), 2, RoundingMode.HALF_UP)
+                                .divide(currentRunStateWithCalories.value.currentRunState.timeDuration.toBigDecimal(), 2, RoundingMode.HALF_UP)
                                 .toFloat(),
-                            distanceInMeters = currentRunState.value.distanceInMeters,
-                            durationInMillis = currentRunState.value.timeDuration,
-                            steps = currentRunState.value.steps
+                            distanceInMeters = currentRunStateWithCalories.value.currentRunState.distanceInMeters,
+                            durationInMillis = currentRunStateWithCalories.value.currentRunState.timeDuration,
+                            caloriesBurned = currentRunStateWithCalories.value.caloriesBurnt,
+                            steps = currentRunStateWithCalories.value.currentRunState.steps
                         )
                     )
-                    Log.d("CurrentRunId2", currentRunId.toString())
-                    Log.d("CurrentRunId2", onFinishRunCallback.toString())
 
                     onFinishRunCallback?.invoke(currentRunId)
                 }

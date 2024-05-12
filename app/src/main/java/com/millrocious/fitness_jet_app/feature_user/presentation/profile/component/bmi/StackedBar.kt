@@ -5,7 +5,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.AnnotatedString
@@ -50,11 +49,10 @@ fun StackedBar(modifier: Modifier, slices: List<BMIUtil.Slice>) {
         slices.forEachIndexed { index: Int, slice: BMIUtil.Slice ->
             val width = (slice.value) / 25f * (canvasWidth - (slices.size + 1) * padding)
 
-            drawRoundRect(
+            drawRect(
                 color = slice.color,
                 topLeft = Offset(currentX, 0f),
                 size = Size(width, canvasHeight),
-                cornerRadius = CornerRadius(15f)
             )
 
             val textSize = textLayoutResults[index].size

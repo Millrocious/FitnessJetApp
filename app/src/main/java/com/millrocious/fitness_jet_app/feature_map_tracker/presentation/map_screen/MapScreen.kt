@@ -31,7 +31,7 @@ fun MapScreen(
     navController: NavController,
     viewModel: MapViewModel = hiltViewModel()
 ) {
-    val currentRunState by viewModel.currentRunState.collectAsStateWithLifecycle()
+    val currentRunState by viewModel.currentRunStateWithCalories.collectAsStateWithLifecycle()
 
     var isMapLoaded by remember { mutableStateOf(false) }
     var isMapLoadedFirst by remember { mutableStateOf(0) }

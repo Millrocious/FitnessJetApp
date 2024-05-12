@@ -12,11 +12,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunStateWithCalories
 
 @Composable
 fun MapBottomMenuHeader(
-    state: CurrentRunState
+    state: CurrentRunStateWithCalories
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -27,7 +27,7 @@ fun MapBottomMenuHeader(
         ) {
             Text(text = "Time", fontSize = 16.sp)
             Text(
-                text = MetricsUtil.formatTime(state.timeDuration),
+                text = MetricsUtil.formatTime(state.currentRunState.timeDuration),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -39,8 +39,6 @@ fun MapBottomMenuHeader(
 @Composable
 private fun MapBottomMenuHeaderPrev() {
     MapBottomMenuHeader(
-        state = CurrentRunState(
-            0, 0f, false, 0L, 0L
-        )
+        state = CurrentRunStateWithCalories()
     )
 }

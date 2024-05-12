@@ -14,12 +14,14 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.AddCu
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetAllRun
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentLocation
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetCurrentRunStateWithCalories
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.GetRunById
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.LocationUseCases
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StartResumePauseTracking
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.StopTracking
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.manager.DefaultLocationServiceManager
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.сlient.DefaultLocationClient
+import com.millrocious.fitness_jet_app.feature_user.domain.repository.UserInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,7 +64,8 @@ object LocationModule {
     fun provideLocationUseCases(
         @FireBaseDb runRepository: RunRepository,
         repository: LocationRepository,
-        trackingManager: TrackingManager
+        trackingManager: TrackingManager,
+        @FireBaseDb userRepository: UserInfoRepository,
     ): LocationUseCases {
         return LocationUseCases(
             getCurrentLocation = GetCurrentLocation(repository),
@@ -71,7 +74,8 @@ object LocationModule {
             stopTracking = StopTracking(trackingManager),
             getAllRun = GetAllRun(runRepository),
             addCurrentRun = AddCurrentRun(runRepository),
-            getRunById = GetRunById(runRepository)
+            getRunById = GetRunById(runRepository),
+            getCurrentRunStateWithCalories = GetCurrentRunStateWithCalories(trackingManager, userRepository)
         )
     }
 }
