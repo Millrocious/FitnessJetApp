@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.millrocious.fitness_jet_app.core.presentation.component.HorizontalWheelPicker
+import com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector.HorizontalWheelPicker
 import kotlinx.coroutines.launch
 
 @Composable

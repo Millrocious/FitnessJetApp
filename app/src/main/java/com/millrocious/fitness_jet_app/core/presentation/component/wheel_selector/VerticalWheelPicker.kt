@@ -1,11 +1,12 @@
-package com.millrocious.fitness_jet_app.core.presentation.component
+package com.millrocious.fitness_jet_app.core.presentation.component.wheel_selector
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,17 +21,17 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 
 @Composable
-fun HorizontalWheelPicker(
+fun VerticalWheelPicker(
     modifier: Modifier = Modifier,
     count: Int,
     startIndex: Int,
     state: LazyListState = rememberLazyListState(),
-    itemWidth: Dp,
+    itemHeight: Dp,
     visibleItemCount: Int,
     onScrollFinish: (index: Int) -> Unit,
     content: @Composable BoxScope.(index: Int) -> Unit
 ) {
-    val itemHalfWidthToPx = with(LocalDensity.current) { itemWidth.toPx() / 2 }
+    val itemHalfWidthToPx = with(LocalDensity.current) { itemHeight.toPx() / 2 }
 
     val currentOnScrollFinish by rememberUpdatedState(onScrollFinish)
 
@@ -59,15 +60,15 @@ fun HorizontalWheelPicker(
         state.scrollToItem(startIndex)
     }
 
-    LazyRow(
-        modifier = modifier.width(itemWidth * visibleItemCount),
+    LazyColumn(
+        modifier = modifier.height(itemHeight * visibleItemCount),
         state = state,
-        contentPadding = PaddingValues(horizontal = itemWidth * (visibleItemCount / 2))
+        contentPadding = PaddingValues(vertical = itemHeight * (visibleItemCount / 2))
     ) {
         items(count, key = { it }) { index ->
             Box(
                 modifier = Modifier
-                    .width(itemWidth),
+                    .width(itemHeight),
                 contentAlignment = Alignment.Center
             ) {
                 content(index)

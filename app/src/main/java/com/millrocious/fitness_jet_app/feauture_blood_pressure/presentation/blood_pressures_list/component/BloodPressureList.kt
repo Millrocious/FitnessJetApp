@@ -64,7 +64,7 @@ fun BloodPressureList(
                             ActionButton(
                                 onClick = {
                                     onNavigate(Screen.AddEditBloodPressureScreen.route +
-                                            "?bloodPressureId=${bloodPressure.id}")
+                                            "?bloodPressureId=${bloodPressure.uuid}")
                                 },
                                 actionIcon = Icons.Default.Edit,
                                 actionTitle = "Edit",

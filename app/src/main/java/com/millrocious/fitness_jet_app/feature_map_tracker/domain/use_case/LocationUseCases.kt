@@ -7,5 +7,6 @@ data class LocationUseCases(
     val stopTracking: StopTracking,
     val getAllRun: GetAllRun,
     val addCurrentRun: AddCurrentRun,
-    val getRunById: GetRunById
+    val getRunById: GetRunById,
+    val getCurrentRunStateWithCalories: GetCurrentRunStateWithCalories
 )

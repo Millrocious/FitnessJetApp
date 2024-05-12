@@ -18,7 +18,7 @@ class BloodPressureRepositoryImpl(
         dao.deleteBloodPressure(bloodPressure)
     }
 
-    override suspend fun getBloodPressureById(id: Int): BloodPressure? {
+    override suspend fun getBloodPressureById(id: String): BloodPressure? {
         return dao.getBloodPressureById(id)
     }
 

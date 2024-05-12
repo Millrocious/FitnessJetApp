@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Fitness Jet App</string>
     <string name="series_x">Series %d</string>
+    <string name="firebase_web_client_id">758148317737-74hgfr4p9dg416ibnpivk5iasouefkf3.apps.googleusercontent.com</string>
 </resources>

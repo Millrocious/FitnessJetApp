@@ -6,7 +6,7 @@ import com.millrocious.fitness_jet_app.feature_map_tracker.domain.repository.Run
 class GetRunById(
     private val runRepository: RunRepository
 ) {
-    suspend operator fun invoke(id: Int): Run? {
+    suspend operator fun invoke(id: String): Run? {
         return runRepository.getRunById(id)
     }
 }

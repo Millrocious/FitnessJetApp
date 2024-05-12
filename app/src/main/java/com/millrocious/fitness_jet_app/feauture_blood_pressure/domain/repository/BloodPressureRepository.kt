@@ -7,7 +7,7 @@ import java.time.LocalDate
 interface BloodPressureRepository {
     suspend fun insertBloodPressure(bloodPressure: BloodPressure)
     suspend fun deleteBloodPressure(bloodPressure: BloodPressure)
-    suspend fun getBloodPressureById(id: Int): BloodPressure?
+    suspend fun getBloodPressureById(id: String): BloodPressure?
     fun getBloodPressures(): Flow<List<BloodPressure>>
     fun getBloodPressuresByDate(): Flow<Map<LocalDate, List<BloodPressure>>>
     suspend fun updateBloodPressure(bloodPressure: BloodPressure)

@@ -9,12 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.millrocious.fitness_jet_app.feature_home.presentation.component.RunList
+import com.millrocious.fitness_jet_app.feature_user.presentation.sign_in.UserData
 
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    userData: UserData?,
 ) {
     val state by viewModel.state
 
@@ -22,6 +24,9 @@ fun HomeScreen(
     Surface(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
-        RunList(state = state)
+        RunList(
+            state = state,
+            userData = userData
+        )
     }
 }

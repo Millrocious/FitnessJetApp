@@ -1,5 +1,6 @@
 package com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -30,7 +31,7 @@ fun MapScreen(
     navController: NavController,
     viewModel: MapViewModel = hiltViewModel()
 ) {
-    val currentRunState by viewModel.currentRunState.collectAsStateWithLifecycle()
+    val currentRunState by viewModel.currentRunStateWithCalories.collectAsStateWithLifecycle()
 
     var isMapLoaded by remember { mutableStateOf(false) }
     var isMapLoadedFirst by remember { mutableStateOf(0) }
@@ -61,14 +62,18 @@ fun MapScreen(
             onEvent = { event ->
                 viewModel.onEvent(event)
             },
-            onSnapshot = { bitmap ->  
-                viewModel.onEvent(MapEvent.FinishRun(bitmap))
-
+            onSnapshot = { bitmap ->
                 viewModel.finishRun { currentRunId ->
-                    navController.navigate(
-                        Screen.FinishMapScreen.route +
-                                "?runId=${currentRunId}")
+                    currentRunId?.let {
+                        Log.d("CurrentRunId", it)
+
+                        navController.navigate(
+                            Screen.FinishMapScreen.route +
+                                    "?runId=${currentRunId}")
+                    }
                 }
+
+                viewModel.onEvent(MapEvent.FinishRun(bitmap))
             },
         )
     } else {

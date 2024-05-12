@@ -64,7 +64,7 @@ fun HeartRateList(
                             ActionButton(
                                 onClick = {
                                     onNavigate(Screen.AddEditHeartRateScreen.route +
-                                            "?heartRateId=${heartRate.id}"
+                                            "?heartRateId=${heartRate.uuid}"
                                     )
                                 },
                                 actionIcon = Icons.Default.Edit,

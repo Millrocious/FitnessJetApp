@@ -1,17 +1,14 @@
 package com.millrocious.fitness_jet_app.feature_map_tracker.presentation.finish_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.millrocious.fitness_jet_app.feature_map_tracker.data.model.Run
 import com.millrocious.fitness_jet_app.feature_map_tracker.domain.use_case.LocationUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,20 +21,21 @@ class MapResultViewModel @Inject constructor(
 
     private var getLatestLocation: Job? = null
 
-    private var currentRunId: Int? = null
+    private var currentRunId: String? = null
 
     init {
-        savedStateHandle.get<Int>("runId")?.let { runId ->
-            if (runId != -1) {
+        savedStateHandle.get<String>("runId")?.let { runId ->
+            if (runId != "") {
                 viewModelScope.launch {
                     locationUseCases.getRunById(runId)?.also {
-                        currentRunId = it.id
+                        currentRunId = it.uuid
 
                         _state.value.img = it.img
                         _state.value.steps = it.steps
                         _state.value.avgSpeedInKMH = it.avgSpeedInKMH
                         _state.value.distanceInMeters = it.distanceInMeters
                         _state.value.durationInMillis = it.durationInMillis
+                        _state.value.caloriesBurned = it.caloriesBurned
                     }
                 }
             }

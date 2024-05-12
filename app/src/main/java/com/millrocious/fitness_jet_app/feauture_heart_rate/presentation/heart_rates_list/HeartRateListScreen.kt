@@ -1,5 +1,6 @@
 package com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.heart_rates_list
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,6 @@ fun HeartRatesListScreen(
     navController: NavController,
     viewModel: HeartRateListViewModel = hiltViewModel()
 ) {
-
     val state = viewModel.state.value.heartRatesGroupedByDate
     val scope = rememberCoroutineScope()
 
@@ -44,6 +44,7 @@ fun HeartRatesListScreen(
             }
         },
     ) { paddingValues ->
+        Log.d("heartRate_list_state", state.toString())
         Column(
             modifier = Modifier
                 .padding(paddingValues)

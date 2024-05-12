@@ -17,8 +17,8 @@ interface BloodPressureDao {
     @Delete
     suspend fun deleteBloodPressure(bloodPressure: BloodPressure)
 
-    @Query("SELECT * FROM bloodpressure WHERE id = :id")
-    suspend fun getBloodPressureById(id: Int): BloodPressure?
+    @Query("SELECT * FROM bloodpressure WHERE uuid = :id")
+    suspend fun getBloodPressureById(id: String): BloodPressure?
 
     @Query("SELECT * FROM bloodpressure")
     fun getBloodPressures(): Flow<List<BloodPressure>>

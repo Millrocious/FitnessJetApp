@@ -6,6 +6,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 // Load local.properties file
@@ -74,7 +75,7 @@ android {
 
 dependencies {
     // Core dependencies
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
@@ -139,12 +140,21 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-service:$lifecycle")
 
-    // For Jetpack Compose.
-//    implementation("com.patrykandpatrick.vico:compose:2.0.0-alpha.17")
-//
-//    // For `compose`. Creates a `ChartStyle` based on an M2 Material Theme.
-//    implementation("com.patrykandpatrick.vico:compose-m2:2.0.0-alpha.17")
-//
-//    // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.17")
+    // Firebase
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+
+    // Add the dependency for the Realtime Database library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-database")
+
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+    //
+    implementation("com.github.zj565061763:compose-wheel-picker:1.0.0-beta05")
 }

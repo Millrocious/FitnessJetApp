@@ -11,6 +11,9 @@ import com.millrocious.fitness_jet_app.core.presentation.util.Screen
 import com.millrocious.fitness_jet_app.feature_home.presentation.HomeScreen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.finish_screen.MapResultScreen
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.MapScreen
+import com.millrocious.fitness_jet_app.feature_user.framework.google_client.GoogleAuthUiClient
+import com.millrocious.fitness_jet_app.feature_user.presentation.profile.ProfileScreen
+import com.millrocious.fitness_jet_app.feature_user.presentation.sign_in.SignInScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.add_edit_blood_pressure.AddEditBloodPressureScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.blood_pressures.BloodPressuresScreen
 import com.millrocious.fitness_jet_app.feauture_blood_pressure.presentation.blood_pressures_list.BloodPressuresListScreen
@@ -20,12 +23,14 @@ import com.millrocious.fitness_jet_app.feauture_heart_rate.presentation.heart_ra
 
 
 @Composable
-fun App() {
+fun App(
+    googleAuthUiClient: GoogleAuthUiClient
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Screen.MetricsScreen.route
+        startDestination = Screen.SignInScreen.route
     ) {
         // Heart rate feature
         composable(
@@ -45,13 +50,14 @@ fun App() {
                 navArgument(
                     name = "heartRateId"
                 ) {
-                    type = NavType.IntType
-                    defaultValue = -1
+                    type = NavType.StringType
+                    defaultValue = ""
                 },
             )
         ) {
             AddEditHeartRateScreen(navController = navController)
         }
+
         // Blood pressure feature
         composable(
             route = Screen.BloodPressuresScreen.route,
@@ -70,19 +76,21 @@ fun App() {
                 navArgument(
                     name = "bloodPressureId"
                 ) {
-                    type = NavType.IntType
-                    defaultValue = -1
+                    type = NavType.StringType
+                    defaultValue = ""
                 },
             )
         ) {
             AddEditBloodPressureScreen(navController = navController)
         }
-        //
+
+        // Metrics
         composable(
             route = Screen.MetricsScreen.route,
         ) {
             MetricsScreen(navController = navController)
         }
+
         // Map Screens
         composable(
             route = Screen.MapScreen.route,
@@ -96,18 +104,40 @@ fun App() {
                 navArgument(
                     name = "runId"
                 ) {
-                    type = NavType.IntType
-                    defaultValue = -1
+                    type = NavType.StringType
+                    defaultValue = ""
                 },
             )
         ) {
             MapResultScreen(navController = navController)
         }
+
         // Home Screens
         composable(
             route = Screen.HomeScreen.route,
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(
+                navController = navController,
+                userData = googleAuthUiClient.getSignedInUser(),
+            )
+        }
+
+        // ------- Auth --------------
+        // Sign In
+        composable(route = Screen.SignInScreen.route) {
+            SignInScreen(
+                navController = navController,
+                googleAuthUiClient
+            )
+        }
+
+        // Profile
+        composable(route = Screen.ProfileScreen.route) {
+            ProfileScreen(
+                navController = navController,
+                userData = googleAuthUiClient.getSignedInUser(),
+                googleAuthUiClient = googleAuthUiClient
+            )
         }
     }
 }

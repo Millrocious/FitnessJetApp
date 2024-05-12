@@ -7,7 +7,7 @@ import java.time.LocalDate
 interface HeartRateRepository {
     suspend fun insertHeartRate(heartRate: HeartRate)
     suspend fun deleteHeartRate(heartRate: HeartRate)
-    suspend fun getHeartRateById(id: Int): HeartRate?
+    suspend fun getHeartRateById(id: String): HeartRate?
     fun getAllHeartRate(): Flow<List<HeartRate>>
     fun getHeartRateGroupedByDate(): Flow<Map<LocalDate, List<HeartRate>>>
     suspend fun updateHeartRate(heartRate: HeartRate)

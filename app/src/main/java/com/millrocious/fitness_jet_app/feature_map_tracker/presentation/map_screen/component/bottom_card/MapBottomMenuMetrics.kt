@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.millrocious.fitness_jet_app.core.presentation.util.MetricsUtil
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunStateWithCalories
 
 @Composable
-fun MapBottomMenuMetrics(state: CurrentRunState) {
+fun MapBottomMenuMetrics(state: CurrentRunStateWithCalories) {
     Column(
         modifier = Modifier.padding(top = 10.dp)
     ) {
@@ -31,12 +31,12 @@ fun MapBottomMenuMetrics(state: CurrentRunState) {
             MetricItem(
                 icon = Icons.Default.LocationOn,
                 title = "Distance",
-                value = MetricsUtil.formatDistance(state.distanceInMeters)
+                value = MetricsUtil.formatDistance(state.currentRunState.distanceInMeters)
             )
             MetricItem(
                 icon = Icons.Outlined.DoNotStep,
                 title = "Steps",
-                value = state.steps.toString()
+                value = state.currentRunState.steps.toString()
             )
         }
         Row(
@@ -48,12 +48,12 @@ fun MapBottomMenuMetrics(state: CurrentRunState) {
             MetricItem(
                 icon = Icons.Default.ElectricBolt,
                 title = "Speed",
-                value = MetricsUtil.formatSpeed(state.speedInKMH)
+                value = MetricsUtil.formatSpeed(state.currentRunState.speedInKMH)
             )
             MetricItem(
                 icon = Icons.Default.LocalFireDepartment,
                 title = "Calories",
-                value = "0"
+                value = state.caloriesBurnt.toString()
             )
         }
     }
@@ -63,9 +63,7 @@ fun MapBottomMenuMetrics(state: CurrentRunState) {
 @Composable
 private fun MapBottomMenuMetricsPrev() {
     MapBottomMenuMetrics(
-        state = CurrentRunState(
-            0, 0f, false, 0L, 0L
-        )
+        state = CurrentRunStateWithCalories()
     )
 }
 

@@ -7,6 +7,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.rounded.People
+import androidx.compose.material.icons.rounded.PeopleOutline
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.millrocious.fitness_jet_app.core.presentation.util.Screen
 
@@ -34,6 +36,13 @@ sealed class BottomNavItem(
         "Metrics",
         Icons.AutoMirrored.Filled.List,
         Icons.AutoMirrored.Outlined.List
+    )
+
+    data object Profile : BottomNavItem(
+        Screen.ProfileScreen.route,
+        "Profile",
+        Icons.Rounded.People,
+        Icons.Rounded.PeopleOutline
     )
 //    data object HeartRatesScreen: BottomNavItem(
 //        Screen.HeartRatesScreen.route,

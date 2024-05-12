@@ -22,14 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunState
+import com.millrocious.fitness_jet_app.feature_map_tracker.domain.model.CurrentRunStateWithCalories
 import com.millrocious.fitness_jet_app.feature_map_tracker.framework.location.service.LocationService
 import com.millrocious.fitness_jet_app.feature_map_tracker.presentation.map_screen.MapEvent
 
 @Composable
 fun MapBottomMenu(
     modifier: Modifier = Modifier,
-    state: CurrentRunState,
+    state: CurrentRunStateWithCalories,
     onEvent: (MapEvent) -> Unit,
     onFinish: () -> Unit,
 ) {
@@ -48,7 +48,7 @@ fun MapBottomMenu(
                 modifier = Modifier.padding(top = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                AnimatedVisibility(visible = state.isTracking) {
+                AnimatedVisibility(visible = state.currentRunState.isTracking) {
                     IconButton(
                         modifier = Modifier
                             .weight(1f)
@@ -78,7 +78,7 @@ fun MapBottomMenu(
                     Log.d("SERVICE_STATE", LocationService.SERVICE_STATE.toString())
                     Icon(
                         modifier = Modifier.size(30.dp),
-                        imageVector = if (!state.isTracking) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                        imageVector = if (!state.currentRunState.isTracking) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
@@ -92,9 +92,7 @@ fun MapBottomMenu(
 @Composable
 private fun MapBottomPrev() {
     MapBottomMenu(
-        state = CurrentRunState(
-            0, 0f, false, 0L, 0L
-        ),
+        state = CurrentRunStateWithCalories(),
         onFinish = {},
         onEvent = {}
     )
