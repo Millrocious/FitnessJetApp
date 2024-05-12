@@ -32,7 +32,7 @@ fun BottomBar(
     navController: NavController
 ) {
     val screens = listOf(
-        BottomNavItem.MapScreen, BottomNavItem.Home, BottomNavItem.Metrics, BottomNavItem.Profile
+        BottomNavItem.Home, BottomNavItem.Metrics, BottomNavItem.Profile
     )
 
     Box(
