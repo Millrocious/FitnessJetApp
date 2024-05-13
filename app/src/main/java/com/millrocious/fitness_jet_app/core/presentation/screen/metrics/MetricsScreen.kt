@@ -23,7 +23,7 @@ fun MetricsScreen(
     navController: NavController,
 ) {
     Scaffold(
-        bottomBar = { BottomBar(navController) }
+        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
         MetricsContent(
             modifier = Modifier.padding(paddingValues),

@@ -11,26 +11,33 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.millrocious.fitness_jet_app.core.presentation.component.DefaultAnimatedShowAndHide
 import com.millrocious.fitness_jet_app.core.presentation.component.bottom_bar.BottomBar
 import com.millrocious.fitness_jet_app.feature_user.domain.model.DialogType
 import com.millrocious.fitness_jet_app.feature_user.domain.model.Gender
 import com.millrocious.fitness_jet_app.feature_user.framework.google_client.GoogleAuthUiClient
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ActionSection
-import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.bmi.BMISection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.GoalsSection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ProfileDialog
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.ProfileHeaderSection
 import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.UserDetailsSection
+import com.millrocious.fitness_jet_app.feature_user.presentation.profile.component.bmi.BMISection
 import com.millrocious.fitness_jet_app.feature_user.presentation.sign_in.UserData
 import kotlinx.coroutines.launch
 
@@ -47,21 +54,17 @@ fun ProfileScreen(
     val profileState by viewModel.state
     val dialogType = remember { mutableStateOf<DialogType?>(null) }
 
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-
     if (dialogType.value != null) {
         ProfileDialog(
             dialogType = dialogType.value!!,
             initialValue = when (dialogType.value) {
-                DialogType.Weight -> profileState.weight as Number
-                DialogType.Height -> profileState.height as Number
-                DialogType.Age -> profileState.age as Number
-                DialogType.StepsGoal -> profileState.stepsGoal as Number
-                DialogType.CaloriesGoal -> profileState.burnedCaloriesGoal as Number
+                DialogType.Weight -> profileState.weight
+                DialogType.Height -> profileState.height
+                DialogType.Age -> profileState.age
+                DialogType.StepsGoal -> profileState.stepsGoal
+                DialogType.CaloriesGoal -> profileState.burnedCaloriesGoal
                 DialogType.Gender -> profileState.gender
-                null -> 0 as Number
+                null -> 0
             },
             onDismissRequest = { dialogType.value = null },
             onConfirmation = { selectedValue ->
@@ -88,14 +91,50 @@ fun ProfileScreen(
         )
     }
 
+    val bottomBarHeight = 48.dp
+    val bottomBarHeightPx = with(LocalDensity.current) { bottomBarHeight.roundToPx().toFloat() }
+    val bottomBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
+
+
+// connection to the nested scroll system and listen to the scroll
+// happening inside child LazyColumn
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+
+                val delta = available.y
+                val newOffset = bottomBarOffsetHeightPx.floatValue + delta
+                bottomBarOffsetHeightPx.floatValue = newOffset.coerceIn(-bottomBarHeightPx, 0f)
+
+                return Offset.Zero
+            }
+        }
+    }
+
+    val scrollState = rememberScrollState()
+    val shouldShowBottomBar by remember(scrollState) {
+        derivedStateOf {
+            val currentPosition = scrollState.value
+            currentPosition == 0 // Check if the scroll position is at the top (0)
+        }
+    }
+
     Scaffold(
-        bottomBar = { BottomBar(navController) }
+        modifier = Modifier.nestedScroll(nestedScrollConnection),
+        bottomBar = {
+            DefaultAnimatedShowAndHide(shouldShowBottomBar) {
+                BottomBar(
+                    modifier = Modifier.padding(top = 20.dp),
+                    navController = navController
+                )
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(paddingValues),
+                .verticalScroll(scrollState)
+                .padding(top = paddingValues.calculateTopPadding()),
             verticalArrangement = Arrangement.Top
         ) {
             ProfileHeaderSection(
@@ -136,3 +175,4 @@ fun ProfileScreen(
         }
     }
 }
+

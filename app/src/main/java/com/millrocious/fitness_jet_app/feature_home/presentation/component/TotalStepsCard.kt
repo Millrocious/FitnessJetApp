@@ -46,7 +46,7 @@ fun TotalStepsCard(
             progress = { (totalSteps?.toFloat() ?: 0f) / userStepsGoal.toFloat() },
             color = MaterialTheme.colorScheme.primary,
             strokeWidth = 14.dp,
-            trackColor = MaterialTheme.colorScheme.surfaceContainer,
+            trackColor = MaterialTheme.colorScheme.surface,
             strokeCap = StrokeCap.Round,
         )
         CircularProgressIndicator(
@@ -57,7 +57,7 @@ fun TotalStepsCard(
             progress = { (totalBurnedCalories?.toFloat() ?: 0f) / userBurnedCaloriesGoal.toFloat() },
             color = MaterialTheme.colorScheme.errorContainer,
             strokeWidth = 14.dp,
-            trackColor = MaterialTheme.colorScheme.surfaceContainer,
+            trackColor = MaterialTheme.colorScheme.surface,
             strokeCap = StrokeCap.Round,
         )
         Column(

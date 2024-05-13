@@ -37,7 +37,7 @@ fun StatsCard(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(20.dp)
             ),
         horizontalArrangement = Arrangement.SpaceAround,
