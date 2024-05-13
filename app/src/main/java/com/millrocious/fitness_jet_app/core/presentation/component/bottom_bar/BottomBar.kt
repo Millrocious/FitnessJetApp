@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BottomBar(
+    modifier: Modifier = Modifier,
     navController: NavController
 ) {
     val screens = listOf(
@@ -36,14 +37,14 @@ fun BottomBar(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         Alignment.BottomCenter
     ) {
-        Box(modifier = Modifier.fillMaxWidth().height(80.dp).padding(top = 25.dp).background(MaterialTheme.colorScheme.background))
+        Box(modifier = Modifier.fillMaxWidth().height(50.dp).background(MaterialTheme.colorScheme.background))
         NavigationBar(
             modifier = Modifier
-                .padding(start = 15.dp, bottom = 15.dp, end = 15.dp)
+                .padding(start = 10.dp, bottom = 10.dp, end = 10.dp)
                 .clip(RoundedCornerShape(20.dp)),
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             tonalElevation = 0.dp

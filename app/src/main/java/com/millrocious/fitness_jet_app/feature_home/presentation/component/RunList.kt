@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -46,9 +47,11 @@ fun RunList(
     modifier: Modifier = Modifier,
     state: HomeState,
     userData: UserData?,
+    scrollState: LazyListState,
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        state = scrollState,
+        modifier = Modifier.fillMaxSize().then(modifier),
         contentPadding = PaddingValues(16.dp)
     ) {
         item {
@@ -82,7 +85,7 @@ fun RunItem(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer),
+            .background(MaterialTheme.colorScheme.surface),
     ) {
         Image(
             modifier = Modifier
