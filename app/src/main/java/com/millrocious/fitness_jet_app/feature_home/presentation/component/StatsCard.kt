@@ -49,6 +49,7 @@ fun StatsCard(
             iconTintColor = MaterialTheme.colorScheme.primary,
             value = homeState.totalSteps.toString(),
             goalValue = homeState.stepsGoal.toString(),
+            valueColor = MaterialTheme.colorScheme.primary,
         )
 
         VerticalDivider(
@@ -61,6 +62,7 @@ fun StatsCard(
             icon = Icons.TwoTone.LocalFireDepartment,
             iconTintColor = MaterialTheme.colorScheme.errorContainer,
             value = homeState.totalBurnedCalories.toString(),
+            valueColor = MaterialTheme.colorScheme.errorContainer,
             goalValue = homeState.burnedCaloriesGoal.toString()
         )
     }
@@ -72,7 +74,8 @@ private fun StepInfo(
     icon: ImageVector,
     iconTintColor: Color,
     value: String,
-    goalValue: String
+    goalValue: String,
+    valueColor: Color
 ) {
     Column(
         modifier = Modifier.padding(16.dp)
@@ -97,7 +100,8 @@ private fun StepInfo(
                 modifier = Modifier.padding(bottom = 2.dp),
                 text = value,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = valueColor
             )
             Text(
                 text = "/$goalValue",
