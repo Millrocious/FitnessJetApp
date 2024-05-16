@@ -75,13 +75,13 @@ android {
 
 dependencies {
     // Core dependencies
-    implementation("androidx.core:core-ktx:1.13.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
 
     // Jetpack Compose Dependencies
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation(platform("androidx.compose:compose-bom:2024.05.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -101,8 +101,8 @@ dependencies {
     val composeVersion = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$composeVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.compose.material:material-icons-extended:1.6.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
 
     // Hilt
     val hiltVersion = "2.49"
@@ -132,7 +132,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
 
     // lifecycle
-    val lifecycle = "2.7.0"
+    val lifecycle = "2.8.0"
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
@@ -141,11 +141,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:$lifecycle")
 
     // Firebase
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.android.gms:play-services-auth:21.1.0")
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
 
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     // Add the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
@@ -155,6 +155,6 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
 
-    //
-    implementation("com.github.zj565061763:compose-wheel-picker:1.0.0-beta05")
+    // Charts
+    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.17")
 }
